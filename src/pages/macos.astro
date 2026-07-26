@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Cliptown for macOS">
+	<main>
+		<h1>Install on <span class="text-gradient">macOS</span></h1>
+		<div class="install-container">
+			<p>Cliptown lives in your menu bar, ensuring you never lose a copied item again.</p>
+			
+			<div class="button-group">
+				<a href="#" class="btn btn-primary">Download for Apple Silicon</a>
+				<a href="#" class="btn btn-secondary">Download for Intel</a>
+			</div>
+			
+			<div class="instructions">
+				<h3>How to use:</h3>
+				<ol>
+					<li>Download and open the `.dmg` file.</li>
+					<li>Drag Cliptown into your Applications folder.</li>
+					<li>Open Cliptown and sign in with your 6-digit PIN.</li>
+				</ol>
+			</div>
+			<a href="/" class="back-link">&larr; Back to Home</a>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 1rem;
+		width: 800px;
+		max-width: calc(100% - 2rem);
+		color: white;
+		font-size: 18px;
+		line-height: 1.6;
+	}
+	h1 {
+		font-size: 3.5rem;
+		font-weight: 700;
+		text-align: center;
+		margin-bottom: 0.5em;
+	}
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	.install-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background: #23262d;
+		padding: 3rem;
+		border-radius: 12px;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+	}
+	.button-group {
+		display: flex;
+		gap: 1rem;
+		margin: 2rem 0;
+	}
+	.btn {
+		padding: 0.8rem 1.5rem;
+		border-radius: 8px;
+		text-decoration: none;
+		font-weight: bold;
+		transition: transform 0.2s, opacity 0.2s;
+	}
+	.btn:hover {
+		transform: translateY(-2px);
+		opacity: 0.9;
+	}
+	.btn-primary {
+		background: var(--accent);
+		color: white;
+	}
+	.btn-secondary {
+		background: #4a4a4a;
+		color: white;
+	}
+	.instructions {
+		margin-top: 2rem;
+		text-align: left;
+		width: 100%;
+		max-width: 500px;
+	}
+	.instructions h3 {
+		color: rgb(var(--accent-light));
+	}
+	.back-link {
+		margin-top: 3rem;
+		color: #888;
+		text-decoration: none;
+	}
+	.back-link:hover {
+		color: white;
+	}
+</style>
