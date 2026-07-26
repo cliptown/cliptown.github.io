@@ -2,128 +2,446 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Cliptown - Sync Your Clipboard Everywhere">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Cliptown</span></h1>
-		<div class="logo-container">
-			<img src="/logo.jpg" alt="Cliptown Logo" class="logo" />
+<Layout title="Cliptown | True End-to-End Encrypted Clipboard Sync">
+	<!-- Navigation -->
+	<nav class="navbar">
+		<div class="nav-content">
+			<div class="brand">
+				<span class="brand-text">Cliptown</span>
+			</div>
+			<div class="nav-links">
+				<a href="#features">Features</a>
+				<a href="#platforms">Platforms</a>
+				<a href="https://github.com/cliptown" target="_blank" class="btn-outline">GitHub</a>
+			</div>
 		</div>
-		<p class="instructions">
-			The ultimate clipboard manager. Sync across <strong>every</strong> device seamlessly, 
-			powered by true End-to-End Encryption.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<li class="link-card">
-				<a href="/macos">
-					<h2>macOS &rarr;</h2>
-					<p>Get the menu bar app for Mac.</p>
-				</a>
-			</li>
-			<li class="link-card">
-				<a href="/windows">
-					<h2>Windows &rarr;</h2>
-					<p>Install the system tray app for PC.</p>
-				</a>
-			</li>
-			<li class="link-card">
-				<a href="/ios">
-					<h2>iOS &rarr;</h2>
-					<p>Download on the App Store.</p>
-				</a>
-			</li>
-			<li class="link-card">
-				<a href="/android">
-					<h2>Android &rarr;</h2>
-					<p>Get it on Google Play.</p>
-				</a>
-			</li>
-		</ul>
+	</nav>
+
+	<main class="container">
+		<!-- Hero Section -->
+		<section class="hero">
+			<div class="hero-logo-wrapper">
+				<div class="glow-ring"></div>
+				<img src="/logo.jpg" alt="Cliptown Logo" class="hero-logo" />
+			</div>
+			
+			<h1 class="hero-title">
+				Sync Your Clipboard <br/>
+				<span class="text-gradient">Everywhere.</span>
+			</h1>
+			
+			<p class="hero-subtitle">
+				The ultimate cross-platform clipboard manager powered by 
+				<strong class="highlight">true End-to-End Encryption</strong>. 
+				Your data belongs to you, always.
+			</p>
+			
+			<div class="hero-cta">
+				<a href="#platforms" class="btn-primary">Download Now</a>
+				<a href="#features" class="btn-secondary">Learn More</a>
+			</div>
+		</section>
+
+		<!-- Features Highlights -->
+		<section id="features" class="features">
+			<div class="feature-badge">
+				<span class="dot"></span> End-to-End Encrypted
+			</div>
+			<div class="feature-badge">
+				<span class="dot"></span> Real-time Sync
+			</div>
+			<div class="feature-badge">
+				<span class="dot"></span> Open Source
+			</div>
+		</section>
+
+		<!-- Platforms Grid -->
+		<section id="platforms" class="platforms-section">
+			<h2 class="section-title">Available on all your devices</h2>
+			
+			<ul role="list" class="platform-grid">
+				<li class="platform-card">
+					<a href="/macos">
+						<div class="card-icon">🍎</div>
+						<h3>macOS</h3>
+						<p>Native menu bar app built with Rust and Flutter. Instant sync for your Mac.</p>
+						<span class="card-action">Download for Mac &rarr;</span>
+					</a>
+				</li>
+				<li class="platform-card">
+					<a href="/windows">
+						<div class="card-icon">🪟</div>
+						<h3>Windows</h3>
+						<p>System tray integration. Runs quietly in the background on your PC.</p>
+						<span class="card-action">Download for Windows &rarr;</span>
+					</a>
+				</li>
+				<li class="platform-card">
+					<a href="/ios">
+						<div class="card-icon">📱</div>
+						<h3>iOS</h3>
+						<p>Secure mobile app. Copy on your phone, paste on your desktop.</p>
+						<span class="card-action">App Store &rarr;</span>
+					</a>
+				</li>
+				<li class="platform-card">
+					<a href="/android">
+						<div class="card-icon">🤖</div>
+						<h3>Android</h3>
+						<p>Native Android integration. Your clipboard in your pocket.</p>
+						<span class="card-action">Google Play &rarr;</span>
+					</a>
+				</li>
+				<li class="platform-card">
+					<a href="/cli">
+						<div class="card-icon">⌨️</div>
+						<h3>Terminal CLI</h3>
+						<p>For power users. Manage your clips straight from the command line.</p>
+						<span class="card-action">Install CLI &rarr;</span>
+					</a>
+				</li>
+				<li class="platform-card">
+					<a href="/chrome">
+						<div class="card-icon">🌐</div>
+						<h3>Browser Extension</h3>
+						<p>Capture text directly from your browser without hitting Cmd+C.</p>
+						<span class="card-action">Chrome Web Store &rarr;</span>
+					</a>
+				</li>
+			</ul>
+		</section>
 	</main>
+
+	<footer>
+		<div class="footer-content">
+			<p>&copy; {new Date().getFullYear()} Cliptown. Open source and secure.</p>
+		</div>
+	</footer>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
+	/* --- Layout & Spacing --- */
+	.container {
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		padding-top: 100px; /* offset for fixed nav */
 	}
-	h1 {
-		font-size: 4rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: 1em;
+
+	/* --- Navbar --- */
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 70px;
+		background: rgba(11, 15, 25, 0.7);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--glass-border);
+		z-index: 100;
+		display: flex;
+		align-items: center;
 	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
+	
+	.nav-content {
+		width: 100%;
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.brand-text {
+		font-size: 1.5rem;
+		font-weight: 800;
+		letter-spacing: -0.5px;
+		background: var(--text-main);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
 	}
-	.logo-container {
+
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+	}
+
+	.nav-links a:not(.btn-outline) {
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.95rem;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+	.nav-links a:hover:not(.btn-outline) {
+		color: var(--text-main);
+	}
+
+	/* --- Hero Section --- */
+	.hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		text-align: center;
-		margin-bottom: 2rem;
+		padding: 6rem 0 4rem;
 	}
-	.logo {
-		max-width: 250px;
-		border-radius: 12px;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+	.hero-logo-wrapper {
+		position: relative;
+		margin-bottom: 3rem;
+		width: 120px;
+		height: 120px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
-	.instructions {
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
+
+	.glow-ring {
+		position: absolute;
+		top: -15%;
+		left: -15%;
+		right: -15%;
+		bottom: -15%;
+		background: var(--accent-gradient);
+		border-radius: 50%;
+		filter: blur(30px);
+		opacity: 0.6;
+		animation: pulse-glow 4s ease-in-out infinite alternate;
+		z-index: 1;
+	}
+
+	@keyframes pulse-glow {
+		0% { transform: scale(0.95); opacity: 0.5; }
+		100% { transform: scale(1.05); opacity: 0.8; }
+	}
+
+	.hero-logo {
+		width: 120px;
+		height: 120px;
+		border-radius: 28px;
+		object-fit: cover;
+		z-index: 2;
+		box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+		border: 2px solid rgba(255,255,255,0.1);
+	}
+
+	.hero-title {
+		font-size: clamp(3rem, 8vw, 5rem);
+		font-weight: 800;
+		line-height: 1.1;
+		margin: 0 0 1.5rem 0;
+		letter-spacing: -1.5px;
+	}
+
+	.text-gradient {
+		background: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		display: inline-block;
+	}
+
+	.hero-subtitle {
+		font-size: 1.25rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		line-height: 1.6;
+		margin: 0 0 3rem 0;
+	}
+
+	.highlight {
+		color: var(--text-main);
+		font-weight: 600;
+	}
+
+	/* --- Buttons --- */
+	.hero-cta {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.btn-primary, .btn-secondary, .btn-outline {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.875rem 2rem;
+		border-radius: 99px;
+		font-weight: 600;
+		font-size: 1rem;
+		text-decoration: none;
+		transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+		cursor: pointer;
+	}
+
+	.btn-primary {
+		background: var(--accent-gradient);
+		color: #fff;
+		box-shadow: 0 4px 15px var(--accent-glow);
+		border: none;
+	}
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px var(--accent-glow);
+	}
+
+	.btn-secondary {
+		background: var(--glass-bg);
+		color: var(--text-main);
+		border: 1px solid var(--glass-border);
+		backdrop-filter: blur(10px);
+	}
+	.btn-secondary:hover {
+		background: rgba(255,255,255,0.1);
+		transform: translateY(-2px);
+	}
+
+	.btn-outline {
+		padding: 0.5rem 1.25rem;
+		font-size: 0.875rem;
+		border: 1px solid var(--glass-border);
 		border-radius: 8px;
-		text-align: center;
+		color: var(--text-main);
 	}
-	.link-card-grid {
+	.btn-outline:hover {
+		background: rgba(255,255,255,0.05);
+		border-color: rgba(255,255,255,0.2);
+	}
+
+	/* --- Features Badges --- */
+	.features {
+		display: flex;
+		justify-content: center;
+		gap: 2rem;
+		flex-wrap: wrap;
+		margin-bottom: 6rem;
+	}
+	
+	.feature-badge {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: var(--glass-bg);
+		border: 1px solid var(--glass-border);
+		padding: 0.5rem 1rem;
+		border-radius: 99px;
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--text-muted);
+	}
+	
+	.dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #10b981;
+		box-shadow: 0 0 10px #10b981;
+	}
+
+	/* --- Platforms Section --- */
+	.platforms-section {
+		padding: 4rem 0 8rem;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		text-align: center;
+		margin-bottom: 4rem;
+		letter-spacing: -0.5px;
+	}
+
+	.platform-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 2rem;
 		padding: 0;
-	}
-	.link-card {
 		list-style: none;
+	}
+
+	.platform-card {
 		display: flex;
-		padding: 1px;
-		background-color: #23262d;
-		background-image: none;
-		background-size: 400%;
-		border-radius: 7px;
-		background-position: 100%;
-		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 	}
-	.link-card > a {
-		width: 100%;
+
+	.platform-card a {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		background: var(--glass-bg);
+		border: 1px solid var(--glass-border);
+		border-radius: 16px;
+		padding: 2.5rem;
 		text-decoration: none;
-		line-height: 1.4;
-		padding: calc(1.5rem - 1px);
-		border-radius: 8px;
-		color: white;
-		background-color: #23262d;
-		opacity: 0.8;
+		color: var(--text-main);
+		transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		backdrop-filter: blur(10px);
 	}
-	h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+	.platform-card a:hover {
+		transform: translateY(-8px);
+		background: rgba(45, 55, 72, 0.5);
+		border-color: rgba(139, 92, 246, 0.4);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(139, 92, 246, 0.15);
 	}
-	p {
-		margin-top: 0.5rem;
-		margin-bottom: 0;
+
+	.card-icon {
+		font-size: 3rem;
+		margin-bottom: 1.5rem;
+		filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 	}
-	.link-card:is(:hover, :focus-within) {
-		background-position: 0;
-		background-image: var(--accent-gradient);
+
+	.platform-card h3 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin: 0 0 1rem 0;
 	}
-	.link-card:is(:hover, :focus-within) h2 {
-		color: rgb(var(--accent-light));
+
+	.platform-card p {
+		color: var(--text-muted);
+		line-height: 1.6;
+		margin: 0 0 2rem 0;
+		font-size: 0.95rem;
+		flex-grow: 1;
+	}
+
+	.card-action {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--primary);
+		display: flex;
+		align-items: center;
+		transition: color 0.3s ease;
+	}
+
+	.platform-card a:hover .card-action {
+		color: var(--secondary);
+	}
+
+	/* --- Footer --- */
+	footer {
+		border-top: 1px solid var(--glass-border);
+		padding: 3rem 0;
+		text-align: center;
+	}
+
+	.footer-content p {
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.hero-title {
+			font-size: 3rem;
+		}
+		.nav-links {
+			display: none;
+		}
+		.platform-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
