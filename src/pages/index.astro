@@ -5,6 +5,9 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Cliptown - Sync Your Clipboard Everywhere">
 	<main>
 		<h1>Welcome to <span class="text-gradient">Cliptown</span></h1>
+		<div class="logo-container">
+			<img src="/logo.jpg" alt="Cliptown Logo" class="logo" />
+		</div>
 		<p class="instructions">
 			The ultimate clipboard manager. Sync across <strong>every</strong> device seamlessly, 
 			powered by true End-to-End Encryption.
@@ -61,6 +64,15 @@ import Layout from '../layouts/Layout.astro';
 		-webkit-text-fill-color: transparent;
 		background-size: 400%;
 		background-position: 0%;
+	}
+	.logo-container {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.logo {
+		max-width: 250px;
+		border-radius: 12px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 	}
 	.instructions {
 		margin-bottom: 2rem;
