@@ -1,43 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PlatformPlan from '../components/PlatformPlan.astro';
 ---
 
-<Layout title="Cliptown for Windows">
-	<main>
-		<h1>Install on <span class="text-gradient">Windows</span></h1>
-		<div class="install-container">
-			<p>Cliptown lives in your system tray, keeping your clipboard synced and secure.</p>
-			
-			<div class="button-group">
-				<a href="#" class="btn btn-primary">Download for Windows (x64)</a>
-				<a href="#" class="btn btn-secondary">Download for Windows (ARM)</a>
-			</div>
-			
-			<div class="instructions">
-				<h3>How to use:</h3>
-				<ol>
-					<li>Download and run the `.exe` installer.</li>
-					<li>Follow the setup wizard.</li>
-					<li>Open Cliptown and sign in with your 6-digit PIN.</li>
-				</ol>
-			</div>
-			<a href="/" class="back-link">&larr; Back to Home</a>
-		</div>
-	</main>
+<Layout title="ClipTown for Windows" description="ClipTown for Windows is a system-tray clipboard workspace with search, favorites, local encryption, and encrypted device sync.">
+  <PlatformPlan
+    name="Windows"
+    icon="⊞"
+    summary="A native-feeling system-tray clipboard workspace with fast search, favorites, rich previews, and trusted-device synchronization."
+    capabilities={[
+      'System-tray popover and configurable global keyboard shortcut.',
+      'Searchable history for text, images, files, links, and rich text.',
+      'Pinned favorites and retention rules for long-lived clips.',
+      'Client-side encryption before cloud or peer synchronization.',
+      'Windows recent-file import through explicit user selection.',
+    ]}
+    boundaries={[
+      'Clipboard observation is opt-in and can be paused instantly.',
+      'Password-manager, secure-input, and excluded applications are never intentionally captured.',
+      'Windows Hello performs local step-up approval without exporting biometric data.',
+      'Signed MSIX or installer artifacts must pass release CI before publication.',
+    ]}
+    repository="https://github.com/cliptown/cliptown-flutter"
+  />
 </Layout>
-
-<style>
-	main { margin: auto; padding: 1rem; width: 800px; max-width: calc(100% - 2rem); color: white; font-size: 18px; line-height: 1.6; }
-	h1 { font-size: 3.5rem; font-weight: 700; text-align: center; margin-bottom: 0.5em; }
-	.text-gradient { background-image: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-	.install-container { display: flex; flex-direction: column; align-items: center; background: #23262d; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-	.button-group { display: flex; gap: 1rem; margin: 2rem 0; }
-	.btn { padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; transition: transform 0.2s, opacity 0.2s; }
-	.btn:hover { transform: translateY(-2px); opacity: 0.9; }
-	.btn-primary { background: var(--accent); color: white; }
-	.btn-secondary { background: #4a4a4a; color: white; }
-	.instructions { margin-top: 2rem; text-align: left; width: 100%; max-width: 500px; }
-	.instructions h3 { color: rgb(var(--accent-light)); }
-	.back-link { margin-top: 3rem; color: #888; text-decoration: none; }
-	.back-link:hover { color: white; }
-</style>
