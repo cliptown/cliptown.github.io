@@ -13,7 +13,7 @@ const {
   description = 'ClipTown is a private, searchable clipboard history that syncs encrypted text, images, links, and files across your devices.',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
-const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
+const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim() ?? '';
 const usesHomepageChrome = Astro.url.pathname === '/';
 ---
 
@@ -42,7 +42,7 @@ const usesHomepageChrome = Astro.url.pathname === '/';
     <meta name="twitter:image" content="https://cliptown.github.io/social-card.svg" />
     <title>{title}</title>
   </head>
-  <body data-patreon-url={patreonUrl}>
+  <body data-support-url={supportUrl}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     {!usesHomepageChrome && <SiteHeader />}
     {usesHomepageChrome ? <slot /> : <div id="main-content"><slot /></div>}
@@ -50,33 +50,33 @@ const usesHomepageChrome = Astro.url.pathname === '/';
 
     <script is:inline>
       (() => {
-        const supportUrl = document.body.dataset.patreonUrl;
+        const supportUrl = document.body.dataset.supportUrl;
         if (!supportUrl) return;
 
         const github = document.querySelector('.site-header .github-link');
-        if (github && !document.querySelector('.site-header .patreon-link')) {
+        if (github && !document.querySelector('.site-header .verified-support-link')) {
           const actions = document.createElement('div');
           actions.className = 'header-actions';
           github.parentElement?.insertBefore(actions, github);
           actions.appendChild(github);
-          const patreon = document.createElement('a');
-          patreon.className = 'patreon-link';
-          patreon.href = supportUrl;
-          patreon.target = '_blank';
-          patreon.rel = 'noreferrer';
-          patreon.innerHTML = 'Patreon <span aria-hidden="true">↗</span>';
-          actions.appendChild(patreon);
+          const support = document.createElement('a');
+          support.className = 'verified-support-link';
+          support.href = supportUrl;
+          support.target = '_blank';
+          support.rel = 'noreferrer';
+          support.innerHTML = 'Support <span aria-hidden="true">↗</span>';
+          actions.appendChild(support);
         }
 
         const footerLinks = document.querySelector('.footer-links');
-        if (footerLinks && !footerLinks.querySelector('.footer-patreon')) {
-          const patreon = document.createElement('a');
-          patreon.className = 'footer-patreon';
-          patreon.href = supportUrl;
-          patreon.target = '_blank';
-          patreon.rel = 'noreferrer';
-          patreon.textContent = 'Patreon';
-          footerLinks.appendChild(patreon);
+        if (footerLinks && !footerLinks.querySelector('.footer-verified-support')) {
+          const support = document.createElement('a');
+          support.className = 'footer-verified-support';
+          support.href = supportUrl;
+          support.target = '_blank';
+          support.rel = 'noreferrer';
+          support.textContent = 'Support';
+          footerLinks.appendChild(support);
         }
       })();
     </script>
@@ -92,7 +92,7 @@ const usesHomepageChrome = Astro.url.pathname === '/';
   }
 
   .header-actions .github-link,
-  .header-actions .patreon-link {
+  .header-actions .verified-support-link {
     justify-self: auto;
     display: inline-flex;
     align-items: center;
@@ -108,7 +108,7 @@ const usesHomepageChrome = Astro.url.pathname === '/';
     transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
   }
 
-  .header-actions .patreon-link {
+  .header-actions .verified-support-link {
     border-color: rgba(255, 92, 120, 0.26);
     color: #ff9caf;
     background: rgba(255, 49, 88, 0.08);
@@ -121,7 +121,7 @@ const usesHomepageChrome = Astro.url.pathname === '/';
 
   @media (max-width: 720px) {
     .header-actions .github-link,
-    .header-actions .patreon-link {
+    .header-actions .verified-support-link {
       font-size: 0;
       min-width: 2.35rem;
       padding-inline: 0.65rem;

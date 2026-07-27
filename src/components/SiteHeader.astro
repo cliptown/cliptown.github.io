@@ -1,7 +1,7 @@
 ---
 import BrandMark from './BrandMark.astro';
 
-const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
+const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
 ---
 
 <header class="shared-header">
@@ -15,7 +15,11 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
     </nav>
     <div class="shared-actions">
       <a class="github" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-      <a class="patreon" href={patreonUrl} target="_blank" rel="noreferrer">Patreon <span aria-hidden="true">↗</span></a>
+      {supportUrl ? (
+        <a class="patreon" href={supportUrl} target="_blank" rel="noreferrer">Support <span aria-hidden="true">↗</span></a>
+      ) : (
+        <a class="support-pending" href="/support">Support status</a>
+      )}
     </div>
   </div>
 </header>
@@ -61,12 +65,18 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
     border-color: rgba(255,92,120,.26);
     background: rgba(255,49,88,.08);
   }
+  .shared-actions .support-pending {
+    color: #b7c6e8;
+    border-style: dashed;
+    background: rgba(104,145,235,.04);
+  }
   @media (max-width: 820px) {
     .shared-nav { grid-template-columns: 1fr auto; }
     nav { display: none; }
   }
   @media (max-width: 520px) {
     .shared-actions .github { display: none; }
-    .shared-actions .patreon { font-size: .72rem; }
+    .shared-actions .patreon,
+    .shared-actions .support-pending { font-size: .72rem; }
   }
 </style>

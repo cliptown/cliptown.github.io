@@ -42,11 +42,25 @@ for (const file of files) {
   if (/Astro Starter Kit|Astro Basics|Download for Apple Silicon|Download for Windows \(x64\)|Get it on Google Play|Download on the App Store/.test(text)) {
     errors.push(`${label}: stale starter or unverified download copy`);
   }
+  if (/https:\/\/www\.patreon\.com\/cliptown/i.test(text)) {
+    errors.push(`${label}: unverified Patreon fallback URL`);
+  }
+  if (/PUBLIC_PATREON_URL\s*\?\?\s*["']https?:\/\//.test(text)) {
+    errors.push(`${label}: PUBLIC_PATREON_URL must not have an external fallback`);
+  }
   for (const match of text.matchAll(/href=["'](\/[^"'#?]*)[^"']*["']/g)) {
     const route = match[1].replace(/\/$/, '') || '/';
     if (route.includes('.')) continue;
     if (!pageRoutes.has(route)) errors.push(`${label}: unresolved internal route ${route}`);
   }
+}
+
+const supportPage = readFileSync(join(root, 'src/pages/support.astro'), 'utf8');
+if (!supportPage.includes('Support destination pending verification')) {
+  errors.push('src/pages/support.astro: missing fail-closed support status');
+}
+if (!supportPage.includes('The site has no fallback funding URL.')) {
+  errors.push('src/pages/support.astro: missing no-fallback support disclosure');
 }
 
 if (errors.length > 0) {
