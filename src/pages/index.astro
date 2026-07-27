@@ -1,447 +1,276 @@
 ---
+import BrandMark from '../components/BrandMark.astro';
+import ProductPreview from '../components/ProductPreview.astro';
 import Layout from '../layouts/Layout.astro';
+
+const features = [
+	{
+		label: 'Search everything',
+		title: 'Find the clip, not the timestamp.',
+		body: 'Search text, links, metadata, images, and files. Local full-text search stays fast; privacy-preserving blind indexes and opt-in semantic retrieval extend it across devices.',
+		accent: 'blue',
+		mark: '⌕',
+	},
+	{
+		label: 'Pin what matters',
+		title: 'A clipboard that remembers on purpose.',
+		body: 'Keep reusable commands, addresses, snippets, colors, screenshots, and documents in a permanent pinned collection instead of losing them after item 100.',
+		accent: 'red',
+		mark: '◆',
+	},
+	{
+		label: 'More than text',
+		title: 'Images and files belong in history too.',
+		body: 'Capture rich text, URLs, images, file references, and recent-file shortcuts with encrypted metadata and content-addressed object storage.',
+		accent: 'split',
+		mark: '▧',
+	},
+];
+
+const platforms = [
+	{ name: 'macOS', detail: 'Menu bar history, global shortcut, rich clipboard formats.', status: 'Desktop alpha', href: 'https://github.com/cliptown/cliptown-flutter' },
+	{ name: 'Windows + Linux', detail: 'System tray access, keyboard-first search, background sync.', status: 'Desktop alpha', href: 'https://github.com/cliptown/cliptown-flutter' },
+	{ name: 'iOS + Android', detail: 'Share sheet, keyboard, and explicit capture flows that respect mobile OS boundaries.', status: 'Mobile foundation', href: 'https://github.com/cliptown/cliptown-flutter' },
+	{ name: 'Browser + CLI', detail: 'Consent-based draft recovery in Chrome and a Rust CLI for automation.', status: 'Developer alpha', href: 'https://github.com/cliptown' },
+];
 ---
 
-<Layout title="Cliptown | True End-to-End Encrypted Clipboard Sync">
-	<!-- Navigation -->
-	<nav class="navbar">
-		<div class="nav-content">
-			<div class="brand">
-				<span class="brand-text">Cliptown</span>
-			</div>
-			<div class="nav-links">
+<Layout title="ClipTown — Your clipboard has a memory">
+	<header class="site-header">
+		<div class="shell nav-shell">
+			<a class="brand-link" href="#top" aria-label="ClipTown home"><BrandMark compact /></a>
+			<nav aria-label="Primary navigation">
 				<a href="#features">Features</a>
+				<a href="#security">Security</a>
 				<a href="#platforms">Platforms</a>
-				<a href="https://github.com/cliptown" target="_blank" class="btn-outline">GitHub</a>
-			</div>
+			</nav>
+			<a class="github-link" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
 		</div>
-	</nav>
+	</header>
 
-	<main class="container">
-		<!-- Hero Section -->
-		<section class="hero">
-			<div class="hero-logo-wrapper">
-				<div class="glow-ring"></div>
-				<img src="/logo.jpg" alt="Cliptown Logo" class="hero-logo" />
+	<main id="main-content">
+		<section id="top" class="hero shell">
+			<div class="hero-copy">
+				<div class="status-pill"><span></span> Open-source alpha</div>
+				<p class="eyebrow">Clipboard history, rebuilt</p>
+				<h1>Your clipboard<br />has a <em>memory.</em></h1>
+				<p class="hero-lede">ClipTown keeps a searchable, pinnable history of the text, images, links, and files you copy—then syncs encrypted clips across desktop, mobile, browser, and terminal.</p>
+				<div class="hero-actions">
+					<a class="button button-primary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">Explore the project <span aria-hidden="true">↗</span></a>
+					<a class="button button-secondary" href="#features">See how it works <span aria-hidden="true">↓</span></a>
+				</div>
+				<div class="hero-notes" aria-label="Core benefits">
+					<span><i></i> Unlimited local history</span>
+					<span><i></i> End-device encryption</span>
+					<span><i></i> Offline peer sync</span>
+				</div>
 			</div>
-			
-			<h1 class="hero-title">
-				Sync Your Clipboard <br/>
-				<span class="text-gradient">Everywhere.</span>
-			</h1>
-			
-			<p class="hero-subtitle">
-				The ultimate cross-platform clipboard manager powered by 
-				<strong class="highlight">true End-to-End Encryption</strong>. 
-				Your data belongs to you, always.
-			</p>
-			
-			<div class="hero-cta">
-				<a href="#platforms" class="btn-primary">Download Now</a>
-				<a href="#features" class="btn-secondary">Learn More</a>
+			<div class="hero-preview">
+				<div class="preview-glow red"></div>
+				<div class="preview-glow blue"></div>
+				<ProductPreview />
 			</div>
 		</section>
 
-		<!-- Features Highlights -->
-		<section id="features" class="features">
-			<div class="feature-badge">
-				<span class="dot"></span> End-to-End Encrypted
-			</div>
-			<div class="feature-badge">
-				<span class="dot"></span> Real-time Sync
-			</div>
-			<div class="feature-badge">
-				<span class="dot"></span> Open Source
+		<section class="signal-strip" aria-label="ClipTown product principles">
+			<div class="shell signal-grid">
+				<div><strong>2,847+</strong><span>clips without an artificial cap</span></div>
+				<div><strong>&lt; 50 ms</strong><span>local keyboard-first retrieval target</span></div>
+				<div><strong>10 days</strong><span>default reauthentication window</span></div>
+				<div><strong>0 plaintext</strong><span>required on the sync backend</span></div>
 			</div>
 		</section>
 
-		<!-- Platforms Grid -->
-		<section id="platforms" class="platforms-section">
-			<h2 class="section-title">Available on all your devices</h2>
-			
-			<ul role="list" class="platform-grid">
-				<li class="platform-card">
-					<a href="/macos">
-						<div class="card-icon">🍎</div>
-						<h3>macOS</h3>
-						<p>Native menu bar app built with Rust and Flutter. Instant sync for your Mac.</p>
-						<span class="card-action">Download for Mac &rarr;</span>
+		<section id="features" class="feature-section shell">
+			<div class="section-heading">
+				<div>
+					<p class="eyebrow">Built for real clipboard use</p>
+					<h2>Copy once.<br />Use it anywhere.</h2>
+				</div>
+				<p>Clipboard managers should not force you to choose between history, search, privacy, and cross-device access. ClipTown treats them as one product.</p>
+			</div>
+
+			<div class="feature-grid">
+				{features.map((feature) => (
+					<article class:list={['feature-card', feature.accent]}>
+						<div class="feature-mark" aria-hidden="true">{feature.mark}</div>
+						<p class="feature-label">{feature.label}</p>
+						<h3>{feature.title}</h3>
+						<p>{feature.body}</p>
+					</article>
+				))}
+			</div>
+
+			<div class="workflow-card surface">
+				<div class="workflow-copy">
+					<p class="eyebrow">Capture without regret</p>
+					<h2>Recover the words you typed but never copied.</h2>
+					<p>The browser extension can preserve drafts on blur or selected keystroke boundaries, while the desktop app can watch clipboard changes. Both are explicit, visible, per-app controls—not silent keylogging.</p>
+					<a href="https://github.com/cliptown/cliptown-extension" target="_blank" rel="noreferrer">Review the extension architecture <span aria-hidden="true">↗</span></a>
+				</div>
+				<div class="workflow-visual" aria-hidden="true">
+					<div class="draft-window">
+						<div class="draft-top"><span></span><span></span><span></span><b>New message</b></div>
+						<div class="draft-lines"><i></i><i></i><i></i><i></i></div>
+						<div class="saved-toast"><span>✓</span><div><b>Draft saved locally</b><small>Encrypted · never copied</small></div></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="security" class="security-section">
+			<div class="shell security-grid">
+				<div class="security-visual" aria-hidden="true">
+					<div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+					<div class="vault"><BrandMark label={false} /><span>Client-side<br />master key</span></div>
+					<div class="node node-a">macOS</div><div class="node node-b">Mobile</div><div class="node node-c">Browser</div>
+				</div>
+				<div class="security-copy">
+					<p class="eyebrow">Private by architecture</p>
+					<h2>The server syncs ciphertext—not your clipboard.</h2>
+					<p>A random account master key is created on a trusted device. Your six-digit PIN and device biometrics unlock protected key material; they are not used as low-entropy encryption keys.</p>
+					<ul>
+						<li><span>01</span><div><b>End-device encryption</b><small>XChaCha20-Poly1305 or AES-256-GCM envelopes before upload.</small></div></li>
+						<li><span>02</span><div><b>Layered authentication</b><small>Supabase sessions with optional 3FA and shared-auth step-up signals.</small></div></li>
+						<li><span>03</span><div><b>Privacy-selectable search</b><small>Local-only, keyed blind indexes, or explicit opt-in vector search.</small></div></li>
+						<li><span>04</span><div><b>Resilient sync</b><small>Rust API first, Bluetooth/Wi-Fi peer transfer when the service is unavailable.</small></div></li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section id="platforms" class="platform-section shell">
+			<div class="section-heading compact-heading">
+				<div><p class="eyebrow">One history, many surfaces</p><h2>Meet your clips wherever you work.</h2></div>
+				<p>Flutter provides the shared product surface, with native platform integrations where clipboard APIs, menu bars, trays, share sheets, and keyboards require them.</p>
+			</div>
+			<div class="platform-list">
+				{platforms.map((platform, index) => (
+					<a href={platform.href} target="_blank" rel="noreferrer" class="platform-row">
+						<span class="platform-number">0{index + 1}</span>
+						<div><h3>{platform.name}</h3><p>{platform.detail}</p></div>
+						<span class="platform-status">{platform.status}</span>
+						<span class="platform-arrow" aria-hidden="true">↗</span>
 					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/windows">
-						<div class="card-icon">🪟</div>
-						<h3>Windows</h3>
-						<p>System tray integration. Runs quietly in the background on your PC.</p>
-						<span class="card-action">Download for Windows &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/ios">
-						<div class="card-icon">📱</div>
-						<h3>iOS</h3>
-						<p>Secure mobile app. Copy on your phone, paste on your desktop.</p>
-						<span class="card-action">App Store &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/android">
-						<div class="card-icon">🤖</div>
-						<h3>Android</h3>
-						<p>Native Android integration. Your clipboard in your pocket.</p>
-						<span class="card-action">Google Play &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/cli">
-						<div class="card-icon">⌨️</div>
-						<h3>Terminal CLI</h3>
-						<p>For power users. Manage your clips straight from the command line.</p>
-						<span class="card-action">Install CLI &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/chrome">
-						<div class="card-icon">🌐</div>
-						<h3>Browser Extension</h3>
-						<p>Capture text directly from your browser without hitting Cmd+C.</p>
-						<span class="card-action">Chrome Web Store &rarr;</span>
-					</a>
-				</li>
-			</ul>
+				))}
+			</div>
+		</section>
+
+		<section class="cta-section shell">
+			<div class="cta-card">
+				<div class="cta-skyline" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+				<div class="cta-content"><p class="eyebrow">Help build ClipTown</p><h2>Clipboard history should feel like infrastructure.</h2><p>Follow the open-source build, inspect the security model, or contribute to Flutter, Rust, browser, SDK, and GitOps workstreams.</p><div><a class="button button-primary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">Visit the GitHub organization <span aria-hidden="true">↗</span></a></div></div>
+			</div>
 		</section>
 	</main>
 
-	<footer>
-		<div class="footer-content">
-			<p>&copy; {new Date().getFullYear()} Cliptown. Open source and secure.</p>
+	<footer class="site-footer">
+		<div class="shell footer-grid">
+			<div><BrandMark compact /><p>A searchable, encrypted memory for everything you copy.</p></div>
+			<div class="footer-links"><a href="https://github.com/cliptown/cliptown-flutter">Flutter</a><a href="https://github.com/cliptown/cliptown-rust-backend.rs">Rust API</a><a href="https://github.com/cliptown/cliptown-cli">CLI</a><a href="https://github.com/cliptown/cliptown-extension">Extension</a></div>
+			<p class="copyright">© {new Date().getFullYear()} ClipTown · Open source alpha</p>
 		</div>
 	</footer>
 </Layout>
 
 <style>
-	/* --- Layout & Spacing --- */
-	.container {
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		padding-top: 100px; /* offset for fixed nav */
-	}
+	.site-header { position: fixed; inset: 0 0 auto; z-index: 50; border-bottom: 1px solid rgba(104,145,235,.12); background: rgba(3,9,20,.72); backdrop-filter: blur(18px); }
+	.nav-shell { min-height: 4.6rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; }
+	.brand-link { width: max-content; text-decoration: none; }
+	nav { display: flex; align-items: center; gap: 1.8rem; }
+	nav a, .github-link { color: #90a5d0; text-decoration: none; font-size: .82rem; font-weight: 700; transition: color 160ms ease; }
+	nav a:hover, .github-link:hover { color: white; }
+	.github-link { justify-self: end; display: inline-flex; gap: .35rem; align-items: center; padding: .55rem .8rem; border: 1px solid rgba(110,151,243,.2); border-radius: .62rem; background: rgba(47,107,255,.07); }
 
-	/* --- Navbar --- */
-	.navbar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 70px;
-		background: rgba(11, 15, 25, 0.7);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-		border-bottom: 1px solid var(--glass-border);
-		z-index: 100;
-		display: flex;
-		align-items: center;
-	}
-	
-	.nav-content {
-		width: 100%;
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
+	.hero { min-height: 52rem; display: grid; grid-template-columns: minmax(0,.86fr) minmax(30rem,1.14fr); align-items: center; gap: clamp(2rem,5vw,5rem); padding-top: 8.5rem; padding-bottom: 5rem; }
+	.hero-copy { position: relative; z-index: 2; }
+	.status-pill { width: max-content; display: flex; align-items: center; gap: .5rem; margin-bottom: 2.1rem; padding: .45rem .72rem; border: 1px solid rgba(255,80,111,.22); border-radius: 999px; color: #ff9aab; background: rgba(255,49,88,.07); font-size: .7rem; font-weight: 760; }
+	.status-pill span { width: .44rem; height: .44rem; border-radius: 50%; background: var(--red-500); box-shadow: 0 0 0 5px rgba(255,49,88,.1); }
+	.hero h1 { margin-bottom: 1.6rem; }
+	.hero h1 em { font-style: normal; color: transparent; background: linear-gradient(105deg,var(--red-400),var(--blue-400) 78%); background-clip: text; -webkit-background-clip: text; }
+	.hero-lede { max-width: 39rem; font-size: clamp(1.05rem,1.45vw,1.22rem); margin-bottom: 2rem; }
+	.hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+	.hero-notes { display: flex; flex-wrap: wrap; gap: .65rem 1.15rem; margin-top: 2rem; color: #758cbd; font-size: .69rem; font-weight: 650; }
+	.hero-notes span { display: flex; align-items: center; gap: .4rem; }
+	.hero-notes i { width: .35rem; height: .35rem; border-radius: 50%; background: var(--blue-400); }
+	.hero-preview { position: relative; display: grid; place-items: center; }
+	.preview-glow { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .28; pointer-events: none; }
+	.preview-glow.red { width: 18rem; height: 18rem; background: var(--red-500); left: -3rem; bottom: 1rem; }
+	.preview-glow.blue { width: 25rem; height: 25rem; background: var(--blue-500); right: -4rem; top: -2rem; }
 
-	.brand-text {
-		font-size: 1.5rem;
-		font-weight: 800;
-		letter-spacing: -0.5px;
-		background: var(--text-main);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
+	.signal-strip { border-block: 1px solid rgba(104,145,235,.13); background: rgba(5,16,37,.5); }
+	.signal-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+	.signal-grid > div { min-height: 8rem; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem 2rem; border-right: 1px solid rgba(104,145,235,.12); }
+	.signal-grid > div:first-child { border-left: 1px solid rgba(104,145,235,.12); }
+	.signal-grid strong { color: white; font-size: 1.45rem; letter-spacing: -.04em; }
+	.signal-grid span { color: #6f86b7; font-size: .68rem; margin-top: .35rem; line-height: 1.45; }
 
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-		align-items: center;
-	}
+	.feature-section { padding-top: 8rem; padding-bottom: 8rem; }
+	.section-heading { display: grid; grid-template-columns: 1fr minmax(20rem,.55fr); align-items: end; gap: 4rem; margin-bottom: 3.2rem; }
+	.section-heading h2 { margin-bottom: 0; }
+	.section-heading > p { margin: 0 0 .35rem; }
+	.feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .9rem; }
+	.feature-card { position: relative; min-height: 25rem; padding: 2rem; border: 1px solid rgba(105,146,238,.16); border-radius: 1.15rem; overflow: hidden; background: linear-gradient(155deg,rgba(13,31,69,.9),rgba(5,16,37,.82)); }
+	.feature-card::after { content: ''; position: absolute; width: 13rem; height: 13rem; right: -6rem; top: -6rem; border-radius: 50%; filter: blur(10px); opacity: .18; background: var(--blue-500); }
+	.feature-card.red::after { background: var(--red-500); }
+	.feature-card.split::after { background: linear-gradient(135deg,var(--red-500),var(--blue-500)); }
+	.feature-mark { width: 3.2rem; height: 3.2rem; display: grid; place-items: center; margin-bottom: 5.5rem; border: 1px solid rgba(112,155,255,.24); border-radius: .85rem; color: #dce7ff; background: rgba(47,107,255,.13); font-size: 1.25rem; }
+	.feature-card.red .feature-mark { border-color: rgba(255,87,117,.25); color: #ffc0cb; background: rgba(255,49,88,.11); }
+	.feature-label { margin-bottom: .6rem; color: var(--blue-300); font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+	.feature-card.red .feature-label { color: var(--red-300); }
+	.feature-card h3 { max-width: 17rem; font-size: 1.55rem; margin-bottom: .9rem; }
+	.feature-card > p:last-child { font-size: .86rem; margin: 0; }
 
-	.nav-links a:not(.btn-outline) {
-		color: var(--text-muted);
-		text-decoration: none;
-		font-size: 0.95rem;
-		font-weight: 500;
-		transition: color 0.2s ease;
-	}
-	.nav-links a:hover:not(.btn-outline) {
-		color: var(--text-main);
-	}
+	.workflow-card { margin-top: .9rem; min-height: 29rem; display: grid; grid-template-columns: .86fr 1.14fr; gap: 2rem; align-items: center; padding: clamp(2rem,5vw,4rem); border-radius: 1.2rem; overflow: hidden; }
+	.workflow-copy h2 { font-size: clamp(2rem,4vw,3.5rem); }
+	.workflow-copy > a { color: #ff8ca1; font-size: .8rem; font-weight: 800; text-decoration: none; }
+	.workflow-visual { display: grid; place-items: center; min-height: 21rem; }
+	.draft-window { position: relative; width: min(100%,31rem); min-height: 17rem; border: 1px solid rgba(107,148,238,.22); border-radius: 1rem; background: rgba(4,13,31,.86); box-shadow: 0 24px 55px rgba(0,9,35,.42); transform: rotate(1.5deg); }
+	.draft-top { min-height: 2.8rem; display: flex; align-items: center; gap: .35rem; padding: 0 .8rem; border-bottom: 1px solid rgba(107,148,238,.14); }
+	.draft-top span { width: .55rem; height: .55rem; border-radius: 50%; background: #ff3158; }.draft-top span:nth-child(2){background:#ffbd4a}.draft-top span:nth-child(3){background:#34d17b}
+	.draft-top b { margin-left: auto; margin-right: auto; color:#9cb1df; font-size:.65rem; }
+	.draft-lines { padding: 2rem; display: grid; gap: .72rem; }
+	.draft-lines i { height: .65rem; border-radius: 999px; background: linear-gradient(90deg,rgba(87,124,207,.32),rgba(87,124,207,.1)); }.draft-lines i:nth-child(2){width:83%}.draft-lines i:nth-child(3){width:92%}.draft-lines i:nth-child(4){width:57%}
+	.saved-toast { position: absolute; right: -1.4rem; bottom: -1.4rem; display:flex; align-items:center; gap:.7rem; min-width:14rem; padding:.85rem; border:1px solid rgba(255,82,112,.27); border-radius:.8rem; background:#101d3b; box-shadow:0 16px 35px rgba(0,0,0,.35); }
+	.saved-toast > span { width:2rem;height:2rem;display:grid;place-items:center;border-radius:.6rem;color:white;background:var(--red-500); }.saved-toast b,.saved-toast small{display:block}.saved-toast b{color:#f4f7ff;font-size:.68rem}.saved-toast small{color:#758abc;font-size:.56rem;margin-top:.15rem}
 
-	/* --- Hero Section --- */
-	.hero {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		padding: 6rem 0 4rem;
-	}
+	.security-section { padding: 8rem 0; border-block: 1px solid rgba(104,145,235,.12); background: linear-gradient(135deg,rgba(6,20,47,.76),rgba(3,10,24,.84)); }
+	.security-grid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(3rem,8vw,8rem); }
+	.security-visual { position: relative; min-height: 32rem; display: grid; place-items: center; }
+	.vault { position:relative; z-index:3; width:10rem;height:10rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;border:1px solid rgba(115,156,251,.28);border-radius:2rem;background:linear-gradient(145deg,#0c2452,#07152f);box-shadow:0 0 80px rgba(47,107,255,.2); }
+	.vault span { color:#9db3e2;font-size:.62rem;text-align:center;line-height:1.35; }
+	.orbit { position:absolute;border:1px solid rgba(93,137,238,.19);border-radius:50%; }.orbit-one{width:20rem;height:20rem}.orbit-two{width:28rem;height:28rem;border-style:dashed;animation:spin 26s linear infinite}
+	.node { position:absolute;z-index:4;padding:.52rem .7rem;border:1px solid rgba(112,152,244,.23);border-radius:.6rem;background:#0a1b3c;color:#9cb4e7;font-size:.62rem;font-weight:750;box-shadow:0 12px 30px rgba(0,9,35,.36); }.node-a{left:5%;top:19%}.node-b{right:1%;top:33%}.node-c{left:13%;bottom:13%}
+	@keyframes spin { to { transform: rotate(360deg); } }
+	.security-copy h2 { max-width: 42rem; }
+	.security-copy > p { max-width: 40rem; }
+	.security-copy ul { list-style:none;padding:0;margin:2rem 0 0;display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+	.security-copy li { display:grid;grid-template-columns:2rem 1fr;gap:.7rem;padding:1rem;border-top:1px solid rgba(103,145,238,.15); }.security-copy li>span{color:#ff6e88;font-size:.65rem;font-weight:800}.security-copy b,.security-copy small{display:block}.security-copy b{color:#e8efff;font-size:.78rem}.security-copy small{color:#758bbb;font-size:.68rem;line-height:1.5;margin-top:.3rem}
 
-	.hero-logo-wrapper {
-		position: relative;
-		margin-bottom: 3rem;
-		width: 120px;
-		height: 120px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+	.platform-section { padding-top: 8rem; padding-bottom: 8rem; }
+	.compact-heading h2 { max-width: 42rem; }
+	.platform-list { border-top: 1px solid rgba(104,145,235,.17); }
+	.platform-row { display:grid;grid-template-columns:3.5rem minmax(0,1fr) auto 2rem;align-items:center;gap:1.2rem;min-height:8rem;border-bottom:1px solid rgba(104,145,235,.17);text-decoration:none;transition:background 180ms ease,padding 180ms ease; }
+	.platform-row:hover { padding-inline:1rem;background:rgba(47,107,255,.055); }
+	.platform-number { color:#ff5d79;font-size:.65rem;font-weight:800; }
+	.platform-row h3 { margin-bottom:.35rem;font-size:1.3rem; }.platform-row p{margin:0;font-size:.77rem;max-width:43rem}.platform-status{padding:.38rem .58rem;border:1px solid rgba(91,136,238,.22);border-radius:999px;color:#829bd0;font-size:.59rem;font-weight:750}.platform-arrow{color:#6e8dd0;font-size:1.1rem}
 
-	.glow-ring {
-		position: absolute;
-		top: -15%;
-		left: -15%;
-		right: -15%;
-		bottom: -15%;
-		background: var(--accent-gradient);
-		border-radius: 50%;
-		filter: blur(30px);
-		opacity: 0.6;
-		animation: pulse-glow 4s ease-in-out infinite alternate;
-		z-index: 1;
-	}
+	.cta-section { padding-bottom: 8rem; }
+	.cta-card { position:relative;min-height:29rem;display:grid;place-items:center;padding:4rem 2rem;border:1px solid rgba(107,149,243,.19);border-radius:1.3rem;overflow:hidden;background:linear-gradient(120deg,#0a2557 0%,#0a1733 55%,#2a0c22 135%);box-shadow:var(--shadow); }
+	.cta-card::before{content:'';position:absolute;width:24rem;height:24rem;right:-8rem;top:-10rem;border-radius:50%;background:var(--red-500);filter:blur(95px);opacity:.18}.cta-content{position:relative;z-index:2;max-width:48rem;text-align:center}.cta-content h2{font-size:clamp(2.5rem,5vw,4.7rem)}.cta-content p:not(.eyebrow){max-width:38rem;margin-inline:auto}.cta-content .eyebrow{justify-content:center}.cta-skyline{position:absolute;inset:auto 0 0;height:9rem;display:flex;align-items:end;gap:.5rem;padding:0 1rem;opacity:.22}.cta-skyline i{display:block;flex:1;height:38%;background:#3977ff}.cta-skyline i:nth-child(2){height:68%}.cta-skyline i:nth-child(3){height:48%}.cta-skyline i:nth-child(4){height:88%;background:#ff3158}.cta-skyline i:nth-child(5){height:57%}.cta-skyline i:nth-child(6){height:32%}
 
-	@keyframes pulse-glow {
-		0% { transform: scale(0.95); opacity: 0.5; }
-		100% { transform: scale(1.05); opacity: 0.8; }
-	}
+	.site-footer { padding:3rem 0;border-top:1px solid rgba(104,145,235,.12);background:#020711; }
+	.footer-grid { display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start; }.footer-grid>div:first-child>p{max-width:22rem;font-size:.7rem;margin:.8rem 0 0}.footer-links{display:flex;gap:1.2rem;flex-wrap:wrap}.footer-links a{color:#8097c7;font-size:.7rem;text-decoration:none}.footer-links a:hover{color:white}.copyright{grid-column:1/-1;margin:1.5rem 0 0;padding-top:1.5rem;border-top:1px solid rgba(104,145,235,.1);font-size:.62rem}
 
-	.hero-logo {
-		width: 120px;
-		height: 120px;
-		border-radius: 28px;
-		object-fit: cover;
-		z-index: 2;
-		box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-		border: 2px solid rgba(255,255,255,0.1);
+	@media(max-width:980px){
+		.hero{grid-template-columns:1fr;padding-top:10rem}.hero-copy{text-align:center}.hero-copy .eyebrow,.status-pill{margin-inline:auto}.hero-lede{margin-inline:auto}.hero-actions,.hero-notes{justify-content:center}.hero-preview{margin-top:2rem}
+		.signal-grid{grid-template-columns:1fr 1fr}.signal-grid>div:nth-child(odd){border-left:1px solid rgba(104,145,235,.12)}
+		.section-heading,.security-grid{grid-template-columns:1fr;gap:2rem}.feature-grid{grid-template-columns:1fr 1fr}.feature-card:last-child{grid-column:1/-1;min-height:20rem}.workflow-card{grid-template-columns:1fr}.security-visual{order:2}.security-copy ul{grid-template-columns:1fr 1fr}
 	}
-
-	.hero-title {
-		font-size: clamp(3rem, 8vw, 5rem);
-		font-weight: 800;
-		line-height: 1.1;
-		margin: 0 0 1.5rem 0;
-		letter-spacing: -1.5px;
-	}
-
-	.text-gradient {
-		background: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		display: inline-block;
-	}
-
-	.hero-subtitle {
-		font-size: 1.25rem;
-		color: var(--text-muted);
-		max-width: 600px;
-		line-height: 1.6;
-		margin: 0 0 3rem 0;
-	}
-
-	.highlight {
-		color: var(--text-main);
-		font-weight: 600;
-	}
-
-	/* --- Buttons --- */
-	.hero-cta {
-		display: flex;
-		gap: 1.5rem;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
-	.btn-primary, .btn-secondary, .btn-outline {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.875rem 2rem;
-		border-radius: 99px;
-		font-weight: 600;
-		font-size: 1rem;
-		text-decoration: none;
-		transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-		cursor: pointer;
-	}
-
-	.btn-primary {
-		background: var(--accent-gradient);
-		color: #fff;
-		box-shadow: 0 4px 15px var(--accent-glow);
-		border: none;
-	}
-	.btn-primary:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 25px var(--accent-glow);
-	}
-
-	.btn-secondary {
-		background: var(--glass-bg);
-		color: var(--text-main);
-		border: 1px solid var(--glass-border);
-		backdrop-filter: blur(10px);
-	}
-	.btn-secondary:hover {
-		background: rgba(255,255,255,0.1);
-		transform: translateY(-2px);
-	}
-
-	.btn-outline {
-		padding: 0.5rem 1.25rem;
-		font-size: 0.875rem;
-		border: 1px solid var(--glass-border);
-		border-radius: 8px;
-		color: var(--text-main);
-	}
-	.btn-outline:hover {
-		background: rgba(255,255,255,0.05);
-		border-color: rgba(255,255,255,0.2);
-	}
-
-	/* --- Features Badges --- */
-	.features {
-		display: flex;
-		justify-content: center;
-		gap: 2rem;
-		flex-wrap: wrap;
-		margin-bottom: 6rem;
-	}
-	
-	.feature-badge {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background: var(--glass-bg);
-		border: 1px solid var(--glass-border);
-		padding: 0.5rem 1rem;
-		border-radius: 99px;
-		font-size: 0.9rem;
-		font-weight: 500;
-		color: var(--text-muted);
-	}
-	
-	.dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: #10b981;
-		box-shadow: 0 0 10px #10b981;
-	}
-
-	/* --- Platforms Section --- */
-	.platforms-section {
-		padding: 4rem 0 8rem;
-	}
-
-	.section-title {
-		font-size: 2.5rem;
-		font-weight: 700;
-		text-align: center;
-		margin-bottom: 4rem;
-		letter-spacing: -0.5px;
-	}
-
-	.platform-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		padding: 0;
-		list-style: none;
-	}
-
-	.platform-card {
-		display: flex;
-	}
-
-	.platform-card a {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		background: var(--glass-bg);
-		border: 1px solid var(--glass-border);
-		border-radius: 16px;
-		padding: 2.5rem;
-		text-decoration: none;
-		color: var(--text-main);
-		transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		backdrop-filter: blur(10px);
-	}
-
-	.platform-card a:hover {
-		transform: translateY(-8px);
-		background: rgba(45, 55, 72, 0.5);
-		border-color: rgba(139, 92, 246, 0.4);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(139, 92, 246, 0.15);
-	}
-
-	.card-icon {
-		font-size: 3rem;
-		margin-bottom: 1.5rem;
-		filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-	}
-
-	.platform-card h3 {
-		font-size: 1.5rem;
-		font-weight: 600;
-		margin: 0 0 1rem 0;
-	}
-
-	.platform-card p {
-		color: var(--text-muted);
-		line-height: 1.6;
-		margin: 0 0 2rem 0;
-		font-size: 0.95rem;
-		flex-grow: 1;
-	}
-
-	.card-action {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--primary);
-		display: flex;
-		align-items: center;
-		transition: color 0.3s ease;
-	}
-
-	.platform-card a:hover .card-action {
-		color: var(--secondary);
-	}
-
-	/* --- Footer --- */
-	footer {
-		border-top: 1px solid var(--glass-border);
-		padding: 3rem 0;
-		text-align: center;
-	}
-
-	.footer-content p {
-		color: var(--text-muted);
-		font-size: 0.9rem;
-	}
-
-	/* Responsive */
-	@media (max-width: 768px) {
-		.hero-title {
-			font-size: 3rem;
-		}
-		.nav-links {
-			display: none;
-		}
-		.platform-grid {
-			grid-template-columns: 1fr;
-		}
+	@media(max-width:720px){
+		.nav-shell{grid-template-columns:1fr auto}.nav-shell nav{display:none}.github-link{font-size:0}.github-link span{font-size:.9rem}
+		.hero{min-height:auto;padding-top:8rem}.hero-copy{text-align:left}.hero-copy .eyebrow,.status-pill{margin-inline:0}.hero-lede{margin-inline:0}.hero-actions,.hero-notes{justify-content:flex-start}.hero-preview{margin-inline:-.25rem}
+		.signal-grid{grid-template-columns:1fr}.signal-grid>div{border-left:1px solid rgba(104,145,235,.12)}
+		.feature-section,.security-section,.platform-section{padding-top:5.5rem;padding-bottom:5.5rem}.feature-grid{grid-template-columns:1fr}.feature-card:last-child{grid-column:auto}.feature-card{min-height:21rem}.feature-mark{margin-bottom:3rem}.workflow-card{padding:1.3rem}.saved-toast{right:.5rem}.security-visual{min-height:25rem;transform:scale(.82)}.security-copy ul{grid-template-columns:1fr}.platform-row{grid-template-columns:2.4rem 1fr 1.5rem;gap:.65rem}.platform-status{display:none}.platform-row p{font-size:.7rem}.footer-grid{grid-template-columns:1fr}.footer-links{margin-top:.5rem}
 	}
 </style>
