@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="ClipTown security model" description="How ClipTown approaches client-side encryption, device keys, PIN unlock, biometrics, Supabase identity, 3FA, shared-auth, private search, and peer synchronization.">
+  <main class="security-main shell">
+    <section class="security-hero">
+      <p class="eyebrow">Security architecture · design target</p>
+      <h1>Encrypted by devices.<br /><em>Coordinated by services.</em></h1>
+      <p class="lede">ClipTown is designed so backend services synchronize approved metadata and ciphertext without receiving the plaintext contents of ordinary clipboard history.</p>
+    </section>
+
+    <aside class="audit-note">ClipTown is under active development and has not completed an independent security audit. This page describes the intended architecture and review requirements, not a certification.</aside>
+
+    <section class="security-grid">
+      <article class="security-card surface">
+        <span>01</span><h2>Random account keys</h2><p>A high-entropy master key is generated on a trusted device. Clips and large objects use authenticated encryption before synchronization.</p>
+      </article>
+      <article class="security-card surface">
+        <span>02</span><h2>PIN as an unlock factor</h2><p>A six-digit PIN does not encrypt the archive directly. It helps unlock wrapped key material under rate limits and step-up policy.</p>
+      </article>
+      <article class="security-card surface">
+        <span>03</span><h2>Local biometrics</h2><p>Face, fingerprint, or voice assertions authorize protected device keys through trusted OS or 3FA APIs. Raw biometric templates are not uploaded.</p>
+      </article>
+      <article class="security-card surface">
+        <span>04</span><h2>Layered identity</h2><p>Supabase Auth provides identity while 3FA and shared-auth can add device and authentication-method assertions for sensitive operations.</p>
+      </article>
+    </section>
+
+    <section class="search-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">Search privacy</p><h2>Choose the leakage boundary explicitly.</h2></div>
+        <p>Plaintext search and RAG stay local by default. Server-assisted modes are separate choices with documented tradeoffs.</p>
+      </div>
+      <div class="mode-grid">
+        <article><b>Local-only</b><p>Full-text indexing, OCR, image labels, embeddings, and RAG run on the trusted device.</p></article>
+        <article><b>Blind index</b><p>Clients upload keyed token digests to retrieve encrypted candidates without ordinary query text.</p></article>
+        <article><b>Opt-in vector</b><p>A user may explicitly upload embeddings for server-side candidate search after a semantic-leakage warning.</p></article>
+        <article><b>Client-side rerank</b><p>The device decrypts candidates, reranks them, and builds retrieval context locally.</p></article>
+      </div>
+    </section>
+
+    <section class="architecture-section surface">
+      <div>
+        <p class="eyebrow">Backend contract</p>
+        <h2>The service stores synchronization state, not casual plaintext.</h2>
+      </div>
+      <ul>
+        <li>User-scoped ciphertext envelopes and encrypted metadata.</li>
+        <li>Encrypted object references for images and files.</li>
+        <li>Device records, idempotency keys, sync cursors, sequences, and tombstones.</li>
+        <li>Blind-index terms and optional embeddings only under the selected privacy mode.</li>
+        <li>PostgreSQL row-level security plus Rust application authorization.</li>
+      </ul>
+    </section>
+
+    <section class="security-cta">
+      <a class="button button-primary" href="https://github.com/cliptown/cliptown-rust-backend.rs" target="_blank" rel="noreferrer">Inspect the Rust backend ↗</a>
+      <a class="button button-secondary" href="https://github.com/cliptown/cliptown-interfaces" target="_blank" rel="noreferrer">Review wire contracts ↗</a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .security-main { padding-top: 4rem; padding-bottom: 2rem; }
+  .security-hero { max-width: 62rem; padding: 3rem 0; }
+  .security-hero h1 { margin-bottom: 1.4rem; }
+  .security-hero h1 em { font-style: normal; color: transparent; background: linear-gradient(105deg,var(--red-400),var(--blue-400) 78%); background-clip: text; -webkit-background-clip: text; }
+  .lede { max-width: 50rem; font-size: 1.15rem; }
+  .audit-note { margin-bottom: 2rem; padding: 1rem 1.2rem; border: 1px solid rgba(255,92,120,.25); border-radius: .8rem; color: #ffb5c2; background: rgba(255,49,88,.07); font-size: .82rem; line-height: 1.6; }
+  .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .security-card { min-height: 18rem; padding: 2rem; border-radius: 1.1rem; }
+  .security-card > span { color: var(--red-300); font-size: .7rem; font-weight: 850; }
+  .security-card h2 { margin: 2.6rem 0 .8rem; font-size: 1.65rem; }
+  .security-card p { margin-bottom: 0; }
+  .search-section { padding: 7rem 0; }
+  .section-heading { display: grid; grid-template-columns: 1fr minmax(20rem,.55fr); align-items: end; gap: 4rem; margin-bottom: 2.5rem; }
+  .section-heading h2, .section-heading > p { margin-bottom: 0; }
+  .mode-grid { display: grid; grid-template-columns: repeat(4,1fr); border-block: 1px solid var(--line); }
+  .mode-grid article { padding: 1.5rem; border-right: 1px solid var(--line); }
+  .mode-grid article:first-child { border-left: 1px solid var(--line); }
+  .mode-grid b { color: var(--ink-strong); }
+  .mode-grid p { margin: .75rem 0 0; font-size: .82rem; }
+  .architecture-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; padding: clamp(1.5rem,4vw,3rem); border-radius: 1.2rem; }
+  .architecture-section h2 { font-size: clamp(2rem,4vw,3.5rem); }
+  .architecture-section ul { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+  .architecture-section li { padding: 0 0 1rem 1.3rem; border-bottom: 1px solid var(--line); color: var(--ink-muted); line-height: 1.6; position: relative; }
+  .architecture-section li::before { content: '◆'; position: absolute; left: 0; top: .3rem; color: var(--blue-400); font-size: .6rem; }
+  .security-cta { display: flex; flex-wrap: wrap; gap: .75rem; padding: 2rem 0 4rem; }
+  @media (max-width: 860px) { .mode-grid { grid-template-columns: 1fr 1fr; } .architecture-section, .section-heading { grid-template-columns: 1fr; gap: 1.5rem; } }
+  @media (max-width: 640px) { .security-grid, .mode-grid { grid-template-columns: 1fr; } .mode-grid article { border-left: 1px solid var(--line); } }
+</style>
