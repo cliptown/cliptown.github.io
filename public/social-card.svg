@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">ClipTown — Your clipboard has a memory</title>
+  <desc id="desc">Red and blue ClipTown skyline branding with a clipboard building.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071229"/>
+      <stop offset=".62" stop-color="#061026"/>
+      <stop offset="1" stop-color="#26091e"/>
+    </linearGradient>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientTransform="translate(930 120) rotate(122) scale(470 560)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2f6bff" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#2f6bff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="redGlow" cx="0" cy="0" r="1" gradientTransform="translate(170 500) rotate(-38) scale(370 430)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff3158" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#ff3158" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sky" x1="735" y1="180" x2="1080" y2="545" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5485ff"/>
+      <stop offset="1" stop-color="#174bd6"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="910" y1="150" x2="1010" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff5c78"/>
+      <stop offset="1" stop-color="#d80f3f"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#6f91df" stroke-opacity=".08"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+  <rect width="1200" height="630" rx="40" fill="url(#blueGlow)"/>
+  <rect width="1200" height="630" rx="40" fill="url(#redGlow)"/>
+  <rect width="1200" height="630" rx="40" fill="url(#grid)"/>
+  <g transform="translate(70 70)">
+    <rect width="78" height="78" rx="20" fill="#071229" stroke="#4779ed" stroke-opacity=".35"/>
+    <path d="M8 63V41h12v22h6V30h13v33h6V22h20v41h6v7H8v-7Z" fill="url(#sky)"/>
+    <path d="M43 29a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v34H43V29Z" fill="url(#signal)"/>
+    <rect x="48" y="18" width="8" height="10" rx="4" fill="#ff9caf"/>
+    <path d="M48 39h8M48 47h8M48 55h8" stroke="#fff" stroke-width="2.7" stroke-linecap="round"/>
+  </g>
+  <text x="170" y="126" fill="#f7f9ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="850" letter-spacing="-2">ClipTown</text>
+  <text x="72" y="276" fill="#f7f9ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="82" font-weight="850" letter-spacing="-4">Your clipboard</text>
+  <text x="72" y="365" fill="#f7f9ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="82" font-weight="850" letter-spacing="-4">has a <tspan fill="#ff5c78">memory.</tspan></text>
+  <text x="76" y="432" fill="#91a5d0" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="26" font-weight="500">Searchable. Pinnable. Encrypted across devices.</text>
+  <rect x="76" y="482" width="252" height="54" rx="14" fill="#ff3158"/>
+  <text x="112" y="517" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="800">Open-source alpha</text>
+  <g opacity=".95">
+    <path d="M720 536V360h90v176h38V265h101v271h38V185h139v351h42v34H690v-34h30Z" fill="url(#sky)"/>
+    <path d="M900 220a26 26 0 0 1 26-26h58a26 26 0 0 1 26 26v316H900V220Z" fill="url(#signal)"/>
+    <rect x="930" y="158" width="50" height="58" rx="24" fill="#ff9caf"/>
+    <path d="M928 284h54M928 345h54M928 406h54" stroke="#fff" stroke-width="15" stroke-linecap="round"/>
+    <path d="M744 408h31M873 314h44M873 376h44M744 468h31" stroke="#c4d5ff" stroke-width="12" stroke-linecap="round" opacity=".9"/>
+  </g>
+</svg>

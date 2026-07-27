@@ -1,79 +1,125 @@
 ---
+import '../styles/global.css';
+
 export interface Props {
 	title: string;
+	description?: string;
 }
 
-const { title } = Astro.props;
+const {
+	title,
+	description = 'ClipTown is a private, searchable clipboard history that syncs encrypted text, images, links, and files across your devices.',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
+const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#071229" />
+		<meta name="color-scheme" content="dark" />
+		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="mask-icon" href="/favicon.svg" color="#ff3158" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="ClipTown" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content="https://cliptown.github.io/social-card.svg" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content="https://cliptown.github.io/social-card.svg" />
 		<title>{title}</title>
-		<!-- Google Fonts: Inter -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 	</head>
-	<body>
+	<body data-patreon-url={patreonUrl}>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<slot />
+		<script is:inline>
+			(() => {
+				const supportUrl = document.body.dataset.patreonUrl;
+				if (!supportUrl) return;
+
+				const github = document.querySelector('.site-header .github-link');
+				if (github && !document.querySelector('.site-header .patreon-link')) {
+					const actions = document.createElement('div');
+					actions.className = 'header-actions';
+					github.parentElement?.insertBefore(actions, github);
+					actions.appendChild(github);
+					const patreon = document.createElement('a');
+					patreon.className = 'patreon-link';
+					patreon.href = supportUrl;
+					patreon.target = '_blank';
+					patreon.rel = 'noreferrer';
+					patreon.innerHTML = 'Patreon <span aria-hidden="true">↗</span>';
+					actions.appendChild(patreon);
+				}
+
+				const footerLinks = document.querySelector('.footer-links');
+				if (footerLinks && !footerLinks.querySelector('.footer-patreon')) {
+					const patreon = document.createElement('a');
+					patreon.className = 'footer-patreon';
+					patreon.href = supportUrl;
+					patreon.target = '_blank';
+					patreon.rel = 'noreferrer';
+					patreon.textContent = 'Patreon';
+					footerLinks.appendChild(patreon);
+				}
+			})();
+		</script>
 	</body>
 </html>
 
 <style is:global>
-	:root {
-		--bg-color: #0b0f19;
-		--bg-gradient: radial-gradient(circle at top right, #1a1f35 0%, #0b0f19 50%, #05070a 100%);
-		--text-main: #ffffff;
-		--text-muted: #94a3b8;
-		
-		--primary: #3b82f6;
-		--secondary: #8b5cf6;
-		--accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-		--accent-glow: rgba(139, 92, 246, 0.4);
-		
-		--glass-bg: rgba(30, 41, 59, 0.4);
-		--glass-border: rgba(255, 255, 255, 0.08);
-		
-		font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	.header-actions {
+		justify-self: end;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
-	*, *::before, *::after {
-		box-sizing: border-box;
+	.header-actions .github-link,
+	.header-actions .patreon-link {
+		justify-self: auto;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.55rem 0.8rem;
+		border: 1px solid rgba(110, 151, 243, 0.2);
+		border-radius: 0.62rem;
+		color: #90a5d0;
+		background: rgba(47, 107, 255, 0.07);
+		font-size: 0.82rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
 	}
 
-	html,
-	body {
-		margin: 0;
-		padding: 0;
-		width: 100%;
-		min-height: 100vh;
-		background-color: var(--bg-color);
-		background-image: var(--bg-gradient);
-		background-attachment: fixed;
-		color: var(--text-main);
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		overflow-x: hidden;
+	.header-actions .patreon-link {
+		border-color: rgba(255, 92, 120, 0.26);
+		color: #ff9caf;
+		background: rgba(255, 49, 88, 0.08);
 	}
-	
-	/* Custom Scrollbar */
-	::-webkit-scrollbar {
-		width: 10px;
+
+	.header-actions a:hover {
+		color: white;
+		border-color: rgba(255, 255, 255, 0.28);
 	}
-	::-webkit-scrollbar-track {
-		background: var(--bg-color);
-	}
-	::-webkit-scrollbar-thumb {
-		background: #334155;
-		border-radius: 5px;
-	}
-	::-webkit-scrollbar-thumb:hover {
-		background: #475569;
+
+	@media (max-width: 720px) {
+		.header-actions .github-link,
+		.header-actions .patreon-link {
+			font-size: 0;
+			min-width: 2.35rem;
+			padding-inline: 0.65rem;
+		}
+		.header-actions a span { font-size: 0.9rem; }
 	}
 </style>

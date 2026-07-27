@@ -1,6 +1,7 @@
-name: Deploy Astro site to GitHub Pages
+name: Marketing site CI and Pages deploy
 
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -10,28 +11,46 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
       - name: Install dependencies
         run: npm ci
       - name: Build with Astro
         run: npm run build
-      - name: Upload artifact
+      - name: Verify required brand assets
+        run: |
+          test -s public/favicon.svg
+          test -s public/logo.svg
+          test -s public/social-card.svg
+          test -s public/site.webmanifest
+          grep -q 'ClipTown' public/favicon.svg
+          grep -q 'PUBLIC_PATREON_URL' src/layouts/Layout.astro
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
