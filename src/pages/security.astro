@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="ClipTown security model"
+  description="How ClipTown approaches client-side encryption, device keys, PIN unlock, biometrics, Supabase identity, 3FA, shared-auth, private search, and peer synchronization."
+>
+  <div class="narrow">
+    <section class="page-hero">
+      <span class="eyebrow">Security architecture · design target</span>
+      <h1>Encrypted by devices. Coordinated by services.</h1>
+      <p>ClipTown is designed so backend services can synchronize and search approved metadata without receiving the plaintext contents of ordinary clipboard history.</p>
+    </section>
+
+    <div class="callout">
+      ClipTown is under active development and has not yet completed an independent security audit. The statements below describe the intended architecture and review requirements, not a certification.
+    </div>
+
+    <article class="prose">
+      <h2>Account and device keys</h2>
+      <p>
+        Each account receives a high-entropy random master key generated on a trusted device. Clips are encrypted with modern authenticated encryption, and large objects such as images or files use dedicated object keys. Device public keys wrap account material for trusted-device enrollment and recovery.
+      </p>
+
+      <h2>The six-digit PIN is an unlock factor, not an encryption key</h2>
+      <p>
+        A six-digit PIN does not contain enough entropy to safely encrypt an entire clipboard archive by itself. ClipTown uses it only as one local or 3FA-mediated factor for unlocking wrapped key material, with rate limits, device protection, and step-up policy around that operation.
+      </p>
+
+      <h2>Biometrics stay on the operating system</h2>
+      <p>
+        Face, fingerprint, or voice recognition should be implemented through trusted operating-system or 3FA challenge APIs. ClipTown must not upload raw biometric templates. A successful local assertion authorizes use of a protected device key.
+      </p>
+
+      <h2>Identity and layered authentication</h2>
+      <p>
+        Supabase Auth is the primary identity provider. Integrations with 3FA and shared-auth can supply step-up factors and device assertions. Access tokens should include device identity and authentication-method references so the Rust backend can enforce sensitive operations such as key enrollment or security-policy changes.
+      </p>
+
+      <h2>Reauthentication</h2>
+      <p>
+        The default policy requires reauthentication after ten days. A user may extend it up to twenty days after recent step-up authentication. Revoked devices and compromised sessions must be invalidated immediately rather than waiting for the interval to expire.
+      </p>
+
+      <h2>Search privacy modes</h2>
+      <div class="detail-grid">
+        <section class="detail-card">
+          <h3>Local-only</h3>
+          <p>Plaintext full-text indexing, OCR, image labels, embeddings, and RAG run on the trusted device. This is the default mode.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Blind index</h3>
+          <p>Clients send keyed token digests that can retrieve encrypted candidates without revealing ordinary query text. Leakage and frequency tradeoffs must be documented.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Opt-in vector</h3>
+          <p>A user may explicitly upload an embedding for server-side candidate search. The UI must explain that embeddings can reveal semantic information.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Client-side RAG</h3>
+          <p>The server returns encrypted candidates; the device decrypts, ranks, and builds retrieval context locally.</p>
+        </section>
+      </div>
+
+      <h2>Backend data</h2>
+      <p>
+        The Rust service stores user-scoped ciphertext envelopes, encrypted metadata, object references, blind-index tokens, optional embeddings, device records, idempotency keys, sync sequences, and deletion tombstones. PostgreSQL row-level security and application authorization both constrain access.
+      </p>
+
+      <h2>Peer synchronization</h2>
+      <p>
+        Local Wi-Fi and Bluetooth-capable transports still exchange signed, encrypted envelopes. Discovery is not trust: devices must pair through authenticated key exchange, verify identities, and reconcile mutations using deterministic clocks and tombstones.
+      </p>
+
+      <h2>Responsible disclosure</h2>
+      <p>
+        Until a dedicated security contact and policy are published, report sensitive findings privately to the organization owner rather than opening a public issue. A formal <code>SECURITY.md</code> and disclosure process belong in every production repository before launch.
+      </p>
+    </article>
+
+    <section class="section">
+      <div class="button-row">
+        <a class="button primary" href="https://github.com/cliptown/cliptown-rust-backend.rs" target="_blank" rel="noreferrer">Inspect the Rust backend ↗</a>
+        <a class="button secondary" href="https://github.com/cliptown/cliptown-interfaces" target="_blank" rel="noreferrer">Review wire contracts ↗</a>
+      </div>
+    </section>
+  </div>
+</Layout>
