@@ -48,40 +48,38 @@ const usesHomepageChrome = Astro.url.pathname === '/';
     {usesHomepageChrome ? <slot /> : <div id="main-content"><slot /></div>}
     {!usesHomepageChrome && <SiteFooter />}
 
-    {usesHomepageChrome && (
-      <script is:inline>
-        {`(() => {
-          const supportUrl = document.body.dataset.patreonUrl;
-          if (!supportUrl) return;
+    <script is:inline>
+      (() => {
+        const supportUrl = document.body.dataset.patreonUrl;
+        if (!supportUrl) return;
 
-          const github = document.querySelector('.site-header .github-link');
-          if (github && !document.querySelector('.site-header .patreon-link')) {
-            const actions = document.createElement('div');
-            actions.className = 'header-actions';
-            github.parentElement?.insertBefore(actions, github);
-            actions.appendChild(github);
-            const patreon = document.createElement('a');
-            patreon.className = 'patreon-link';
-            patreon.href = supportUrl;
-            patreon.target = '_blank';
-            patreon.rel = 'noreferrer';
-            patreon.innerHTML = 'Patreon <span aria-hidden="true">↗</span>';
-            actions.appendChild(patreon);
-          }
+        const github = document.querySelector('.site-header .github-link');
+        if (github && !document.querySelector('.site-header .patreon-link')) {
+          const actions = document.createElement('div');
+          actions.className = 'header-actions';
+          github.parentElement?.insertBefore(actions, github);
+          actions.appendChild(github);
+          const patreon = document.createElement('a');
+          patreon.className = 'patreon-link';
+          patreon.href = supportUrl;
+          patreon.target = '_blank';
+          patreon.rel = 'noreferrer';
+          patreon.innerHTML = 'Patreon <span aria-hidden="true">↗</span>';
+          actions.appendChild(patreon);
+        }
 
-          const footerLinks = document.querySelector('.footer-links');
-          if (footerLinks && !footerLinks.querySelector('.footer-patreon')) {
-            const patreon = document.createElement('a');
-            patreon.className = 'footer-patreon';
-            patreon.href = supportUrl;
-            patreon.target = '_blank';
-            patreon.rel = 'noreferrer';
-            patreon.textContent = 'Patreon';
-            footerLinks.appendChild(patreon);
-          }
-        })();`}
-      </script>
-    )}
+        const footerLinks = document.querySelector('.footer-links');
+        if (footerLinks && !footerLinks.querySelector('.footer-patreon')) {
+          const patreon = document.createElement('a');
+          patreon.className = 'footer-patreon';
+          patreon.href = supportUrl;
+          patreon.target = '_blank';
+          patreon.rel = 'noreferrer';
+          patreon.textContent = 'Patreon';
+          footerLinks.appendChild(patreon);
+        }
+      })();
+    </script>
   </body>
 </html>
 
