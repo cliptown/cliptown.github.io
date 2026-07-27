@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
+---
+
+<Layout title="Support ClipTown" description="Contribute code, testing, design, documentation, or funding to the open-source ClipTown clipboard platform.">
+  <main class="support-main shell">
+    <section class="support-hero">
+      <p class="eyebrow">Build the town together</p>
+      <h1>Support ClipTown with code, testing, design, or funding.</h1>
+      <p class="lede">The project spans Flutter apps, a Rust API, SDKs, browser integration, encryption, local search, peer sync, and GitOps infrastructure.</p>
+    </section>
+
+    <section class="support-grid">
+      <article class="support-card surface">
+        <span class="card-mark blue">⌘</span>
+        <h2>Contribute on GitHub</h2>
+        <p>Review architecture, open focused issues, improve tests, validate platform constraints, or help implement a repository roadmap.</p>
+        <a class="button button-secondary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
+      </article>
+      <article class="support-card surface">
+        <span class="card-mark red">♥</span>
+        <h2>Patreon</h2>
+        <p>Help cover test devices, code signing, store fees, design work, and infrastructure while following development updates.</p>
+        <a class="button button-primary" href={patreonUrl} target="_blank" rel="noreferrer">ClipTown on Patreon ↗</a>
+      </article>
+      <article class="support-card surface">
+        <span class="card-mark split">★</span>
+        <h2>GitHub Sponsors</h2>
+        <p>Support the organization owner and linked ClipTown work through GitHub's funding surface when available.</p>
+        <a class="button button-secondary" href="https://github.com/sponsors/ORESoftware" target="_blank" rel="noreferrer">GitHub Sponsors ↗</a>
+      </article>
+    </section>
+
+    <aside class="verification-note">
+      The Patreon URL is configurable with <code>PUBLIC_PATREON_URL</code>. Verify the creator page before a public funding announcement.
+    </aside>
+
+    <section class="priority-section">
+      <div>
+        <p class="eyebrow">High-value help</p>
+        <h2>Contributions that unlock real releases.</h2>
+      </div>
+      <div class="priority-grid">
+        <article><h3>Platform testing</h3><p>Permissions, trays, menu bars, keyboards, share sheets, emulators, physical devices, signing, and packaging.</p></article>
+        <article><h3>Security review</h3><p>Key hierarchy, enrollment, recovery, revocation, private search, peer pairing, and replay protection.</p></article>
+        <article><h3>Product design</h3><p>Keyboard-first search, rich previews, accessibility, capture consent, exclusions, and privacy explanations.</p></article>
+        <article><h3>Release engineering</h3><p>Signed artifacts, provenance, app-store metadata, update channels, changelogs, and deployment validation.</p></article>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .support-main { padding-top: 4rem; padding-bottom: 2rem; }
+  .support-hero { max-width: 58rem; padding: 3rem 0; }
+  .support-hero h1 { margin-bottom: 1.4rem; }
+  .lede { max-width: 48rem; font-size: 1.15rem; }
+  .support-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  .support-card { min-height: 25rem; display: flex; flex-direction: column; padding: 2rem; border-radius: 1.1rem; }
+  .support-card h2 { font-size: 1.65rem; margin: 1.5rem 0 .8rem; }
+  .support-card p { margin-bottom: 1.5rem; }
+  .support-card .button { margin-top: auto; }
+  .card-mark { width: 3.2rem; height: 3.2rem; display: grid; place-items: center; border-radius: .85rem; font-size: 1.2rem; }
+  .card-mark.blue { color: #dce7ff; border: 1px solid rgba(112,155,255,.24); background: rgba(47,107,255,.13); }
+  .card-mark.red { color: #ffc0cb; border: 1px solid rgba(255,87,117,.25); background: rgba(255,49,88,.11); }
+  .card-mark.split { color: white; background: linear-gradient(135deg,rgba(255,49,88,.35),rgba(47,107,255,.35)); }
+  .verification-note { margin: 1rem 0 6rem; padding: 1rem 1.2rem; border: 1px solid rgba(255,92,120,.25); border-radius: .8rem; color: #ffb5c2; background: rgba(255,49,88,.07); font-size: .82rem; line-height: 1.6; }
+  .priority-section { padding-bottom: 4rem; }
+  .priority-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .priority-grid article { padding: 1.5rem; border-top: 1px solid var(--line); }
+  .priority-grid h3 { margin-bottom: .6rem; }
+  .priority-grid p { margin-bottom: 0; font-size: .86rem; }
+  @media (max-width: 860px) { .support-grid { grid-template-columns: 1fr; } .support-card { min-height: auto; } }
+  @media (max-width: 640px) { .priority-grid { grid-template-columns: 1fr; } }
+</style>
