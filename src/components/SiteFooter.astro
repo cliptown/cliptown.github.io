@@ -1,7 +1,7 @@
 ---
 import BrandMark from './BrandMark.astro';
 
-const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
+const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
 ---
 
 <footer class="shared-footer">
@@ -19,7 +19,11 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
     <div class="footer-group">
       <strong>Community</strong>
       <a href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
-      <a href={patreonUrl} target="_blank" rel="noreferrer">Patreon ↗</a>
+      {supportUrl ? (
+        <a href={supportUrl} target="_blank" rel="noreferrer">Verified support destination ↗</a>
+      ) : (
+        <a href="/support">Support destination pending verification</a>
+      )}
       <a href="/support">Ways to support</a>
     </div>
   </div>
