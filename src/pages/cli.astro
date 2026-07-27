@@ -1,0 +1,29 @@
+---
+import PlatformPage from '../components/PlatformPage.astro';
+---
+
+<PlatformPage
+  name="Rust CLI"
+  icon=">_"
+  description="The ClipTown Rust CLI searches, copies, pins, syncs, and diagnoses encrypted clipboard history while using ORESoftware/flags-2-env for its command contract."
+  summary="A scriptable, keyboard-native interface for people who want clipboard workflows in terminals, shell scripts, editors, and remote development environments."
+  capabilities={[
+    'List, search, inspect, copy, pin, unpin, and tombstone clips.',
+    'Add text, selected files, or the current clipboard through explicit commands.',
+    'Pull, push, pair, and inspect sync state across trusted devices.',
+    'Emit human-readable or JSON output for automation.',
+    'Run a doctor command for API, keyring, clipboard, auth, and peer-sync diagnostics.',
+  ]}
+  boundaries={[
+    'A six-digit PIN is never accepted directly on the command line or written to shell history.',
+    'Session material belongs in the operating-system keyring, not plaintext config files.',
+    'Clipboard reads happen only after an explicit command.',
+    'HTTPS is required for non-local endpoints.',
+  ]}
+  technical={[
+    'Rust binary backed by the shared interfaces and client SDK repositories.',
+    'ORESoftware/flags-2-env normalizes subcommands and environment overrides.',
+    'Cross-platform CI for Linux, macOS, and Windows.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-cli"
+/>
