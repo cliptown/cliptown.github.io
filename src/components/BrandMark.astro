@@ -8,24 +8,7 @@ const { compact = false, label = true } = Astro.props;
 ---
 
 <div class:list={['brand-mark', { compact }]} aria-label={label ? 'ClipTown' : undefined}>
-	<svg viewBox="0 0 72 72" role="img" aria-hidden="true">
-		<defs>
-			<linearGradient id="brand-sky" x1="8" y1="12" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-				<stop stop-color="#2f6bff" />
-				<stop offset="1" stop-color="#0b3fd7" />
-			</linearGradient>
-			<linearGradient id="brand-signal" x1="30" y1="16" x2="50" y2="58" gradientUnits="userSpaceOnUse">
-				<stop stop-color="#ff4969" />
-				<stop offset="1" stop-color="#d80f3f" />
-			</linearGradient>
-		</defs>
-		<rect x="2" y="2" width="68" height="68" rx="18" fill="#071229" />
-		<path d="M9 57V38h10v19h5V27h11v30h5V20h18v37h5v6H9v-6Z" fill="url(#brand-sky)" />
-		<path d="M38 25.5a4.5 4.5 0 0 1 4.5-4.5h7a4.5 4.5 0 0 1 4.5 4.5V57H38V25.5Z" fill="url(#brand-signal)" />
-		<rect x="42.5" y="17" width="7" height="8" rx="3.5" fill="#ff8ca1" />
-		<path d="M43 33h6M43 40h6M43 47h6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".92" />
-		<path d="M12 43h4M27 33h5M27 40h5M12 50h4" stroke="#b9ceff" stroke-width="2" stroke-linecap="round" opacity=".9" />
-	</svg>
+	<img src="/favicon.svg" alt="" width="72" height="72" decoding="async" />
 	{label && <span>ClipTown</span>}
 </div>
 
@@ -40,14 +23,14 @@ const { compact = false, label = true } = Astro.props;
 		color: var(--ink-strong);
 	}
 
-	svg {
+	img {
 		width: 2.35rem;
 		height: 2.35rem;
 		flex: none;
 		filter: drop-shadow(0 10px 20px rgba(15, 59, 175, 0.2));
 	}
 
-	.compact svg {
+	.compact img {
 		width: 1.9rem;
 		height: 1.9rem;
 	}
