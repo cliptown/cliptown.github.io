@@ -1,0 +1,43 @@
+name: Site CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate routes, assets, and claims
+        run: npm run check:site
+      - name: Build static site
+        run: npm run build
+      - name: Check generated HTML for placeholder links
+        run: |
+          if grep -RInE 'href=["'"']#["'"']|Astro Starter Kit|Download for Apple Silicon' dist; then
+            echo 'placeholder content found in generated site'
+            exit 1
+          fi
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cliptown-site
+          path: dist
+          if-no-files-found: error
