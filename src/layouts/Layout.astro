@@ -11,6 +11,7 @@ const {
 	description = 'ClipTown is a private, searchable clipboard history that syncs encrypted text, images, links, and files across your devices.',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
+const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
 ---
 
 <!doctype html>
@@ -25,6 +26,7 @@ const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
 		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="mask-icon" href="/favicon.svg" color="#ff3158" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="ClipTown" />
 		<meta property="og:title" content={title} />
@@ -37,8 +39,87 @@ const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
 		<meta name="twitter:image" content="https://cliptown.github.io/social-card.svg" />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body data-patreon-url={patreonUrl}>
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<slot />
+		<script is:inline>
+			(() => {
+				const supportUrl = document.body.dataset.patreonUrl;
+				if (!supportUrl) return;
+
+				const github = document.querySelector('.site-header .github-link');
+				if (github && !document.querySelector('.site-header .patreon-link')) {
+					const actions = document.createElement('div');
+					actions.className = 'header-actions';
+					github.parentElement?.insertBefore(actions, github);
+					actions.appendChild(github);
+					const patreon = document.createElement('a');
+					patreon.className = 'patreon-link';
+					patreon.href = supportUrl;
+					patreon.target = '_blank';
+					patreon.rel = 'noreferrer';
+					patreon.innerHTML = 'Patreon <span aria-hidden="true">↗</span>';
+					actions.appendChild(patreon);
+				}
+
+				const footerLinks = document.querySelector('.footer-links');
+				if (footerLinks && !footerLinks.querySelector('.footer-patreon')) {
+					const patreon = document.createElement('a');
+					patreon.className = 'footer-patreon';
+					patreon.href = supportUrl;
+					patreon.target = '_blank';
+					patreon.rel = 'noreferrer';
+					patreon.textContent = 'Patreon';
+					footerLinks.appendChild(patreon);
+				}
+			})();
+		</script>
 	</body>
 </html>
+
+<style is:global>
+	.header-actions {
+		justify-self: end;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.header-actions .github-link,
+	.header-actions .patreon-link {
+		justify-self: auto;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.55rem 0.8rem;
+		border: 1px solid rgba(110, 151, 243, 0.2);
+		border-radius: 0.62rem;
+		color: #90a5d0;
+		background: rgba(47, 107, 255, 0.07);
+		font-size: 0.82rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+	}
+
+	.header-actions .patreon-link {
+		border-color: rgba(255, 92, 120, 0.26);
+		color: #ff9caf;
+		background: rgba(255, 49, 88, 0.08);
+	}
+
+	.header-actions a:hover {
+		color: white;
+		border-color: rgba(255, 255, 255, 0.28);
+	}
+
+	@media (max-width: 720px) {
+		.header-actions .github-link,
+		.header-actions .patreon-link {
+			font-size: 0;
+			min-width: 2.35rem;
+			padding-inline: 0.65rem;
+		}
+		.header-actions a span { font-size: 0.9rem; }
+	}
+</style>
