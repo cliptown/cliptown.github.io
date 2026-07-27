@@ -1,41 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import PlatformPage from '../components/PlatformPage.astro';
 ---
 
-<Layout title="Cliptown for iOS">
-	<main>
-		<h1>Install on <span class="text-gradient">iOS</span></h1>
-		<div class="install-container">
-			<p>Access your securely synced clipboard right from your iPhone or iPad.</p>
-			
-			<div class="button-group">
-				<a href="#" class="btn btn-primary">Download on the App Store</a>
-			</div>
-			
-			<div class="instructions">
-				<h3>How to use:</h3>
-				<ol>
-					<li>Download Cliptown from the App Store.</li>
-					<li>Open the app and authenticate with your 6-digit PIN or Face ID.</li>
-					<li>Enable the Cliptown Custom Keyboard to paste anywhere.</li>
-				</ol>
-			</div>
-			<a href="/" class="back-link">&larr; Back to Home</a>
-		</div>
-	</main>
-</Layout>
-
-<style>
-	main { margin: auto; padding: 1rem; width: 800px; max-width: calc(100% - 2rem); color: white; font-size: 18px; line-height: 1.6; }
-	h1 { font-size: 3.5rem; font-weight: 700; text-align: center; margin-bottom: 0.5em; }
-	.text-gradient { background-image: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-	.install-container { display: flex; flex-direction: column; align-items: center; background: #23262d; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-	.button-group { display: flex; gap: 1rem; margin: 2rem 0; }
-	.btn { padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; transition: transform 0.2s, opacity 0.2s; }
-	.btn:hover { transform: translateY(-2px); opacity: 0.9; }
-	.btn-primary { background: var(--accent); color: white; }
-	.instructions { margin-top: 2rem; text-align: left; width: 100%; max-width: 500px; }
-	.instructions h3 { color: rgb(var(--accent-light)); }
-	.back-link { margin-top: 3rem; color: #888; text-decoration: none; }
-	.back-link:hover { color: white; }
-</style>
+<PlatformPage
+  name="iPhone & iPad"
+  icon="◉"
+  description="ClipTown for iOS and iPadOS provides intentional clipboard import, share-sheet capture, keyboard access, local search, and encrypted synchronization."
+  summary="A mobile clipboard library that works with iOS privacy boundaries instead of pretending an app can monitor every copy in the background."
+  capabilities={[
+    'Import the current clipboard after a user gesture and platform permission prompt.',
+    'Save text, links, images, and files through a Share extension.',
+    'Paste pinned clips through a custom keyboard and Shortcuts actions.',
+    'Search and decrypt synchronized history locally.',
+    'Approve step-up authentication with Face ID or Touch ID on-device.',
+  ]}
+  boundaries={[
+    'iOS does not permit unrestricted continuous background clipboard monitoring.',
+    'Clipboard reads may show system privacy prompts and always require a clear user action.',
+    'Custom keyboards have strict sandbox and network-access constraints.',
+    'App Store review and privacy manifests must be complete before release.',
+  ]}
+  technical={[
+    'Flutter application with native Share, Keyboard, and Shortcuts extensions.',
+    'Keychain/Secure Enclave protection for device keys where supported.',
+    'Simulator tests plus physical-device validation for clipboard privacy behavior.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>
