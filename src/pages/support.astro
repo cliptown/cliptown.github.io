@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.com/cliptown';
+const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
 ---
 
 <Layout title="Support ClipTown" description="Contribute code, testing, design, documentation, or funding to the open-source ClipTown clipboard platform.">
@@ -21,9 +21,18 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
       </article>
       <article class="support-card surface">
         <span class="card-mark red">♥</span>
-        <h2>Patreon</h2>
-        <p>Help cover test devices, code signing, store fees, design work, and infrastructure while following development updates.</p>
-        <a class="button button-primary" href={patreonUrl} target="_blank" rel="noreferrer">ClipTown on Patreon ↗</a>
+        <h2>Direct support</h2>
+        {supportUrl ? (
+          <>
+            <p>Help cover test devices, code signing, store fees, design work, and infrastructure through the verified ClipTown support destination.</p>
+            <a class="button button-primary" href={supportUrl} target="_blank" rel="noreferrer">Open verified support page ↗</a>
+          </>
+        ) : (
+          <>
+            <p>The official direct-funding destination has not been verified yet. No external funding link is published until ownership is confirmed.</p>
+            <span class="button button-disabled" aria-disabled="true">Support destination pending verification</span>
+          </>
+        )}
       </article>
       <article class="support-card surface">
         <span class="card-mark split">★</span>
@@ -34,7 +43,7 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
     </section>
 
     <aside class="verification-note">
-      The Patreon URL is configurable with <code>PUBLIC_PATREON_URL</code>. Verify the creator page before a public funding announcement.
+      An external support destination appears only when <code>PUBLIC_PATREON_URL</code> is explicitly configured after ownership verification. The site has no fallback funding URL.
     </aside>
 
     <section class="priority-section">
@@ -62,6 +71,7 @@ const patreonUrl = import.meta.env.PUBLIC_PATREON_URL ?? 'https://www.patreon.co
   .support-card h2 { font-size: 1.65rem; margin: 1.5rem 0 .8rem; }
   .support-card p { margin-bottom: 1.5rem; }
   .support-card .button { margin-top: auto; }
+  .button-disabled { cursor: not-allowed; opacity: .72; border-style: dashed; color: #aebbd9; }
   .card-mark { width: 3.2rem; height: 3.2rem; display: grid; place-items: center; border-radius: .85rem; font-size: 1.2rem; }
   .card-mark.blue { color: #dce7ff; border: 1px solid rgba(112,155,255,.24); background: rgba(47,107,255,.13); }
   .card-mark.red { color: #ffc0cb; border: 1px solid rgba(255,87,117,.25); background: rgba(255,49,88,.11); }
