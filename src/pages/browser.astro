@@ -1,0 +1,29 @@
+---
+import PlatformPage from '../components/PlatformPage.astro';
+---
+
+<PlatformPage
+  name="Browser extension"
+  icon="◎"
+  description="The ClipTown browser extension saves copied content and can provide consent-based draft recovery on approved sites without collecting password or payment fields."
+  summary="A Manifest V3 extension for browser copy history and opt-in draft rescue, designed around allowlists, redaction, local encryption, and clear controls."
+  capabilities={[
+    'Capture browser copy events with page origin and type metadata.',
+    'Preserve drafts on approved domains after explicit per-site consent.',
+    'Save on blur and at conservative intervals to reduce data loss.',
+    'Search encrypted ClipTown history and copy results back into the page.',
+    'Pause, exclude a site, delete a draft, or purge local extension data instantly.',
+  ]}
+  boundaries={[
+    'Password, payment, one-time-code, hidden, and explicitly sensitive fields are excluded.',
+    'Draft rescue is off by default and enabled per domain, never globally by surprise.',
+    'Content scripts receive the minimum host permissions needed for approved sites.',
+    'The extension stores encrypted payloads locally and never logs keystroke streams.',
+  ]}
+  technical={[
+    'Manifest V3 service worker with minimal permissions and strict content-security policy.',
+    'DOM adapters that classify input types before any capture decision.',
+    'Playwright coverage for consent, redaction, pause, purge, and offline behavior.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-extension"
+/>
