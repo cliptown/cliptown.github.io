@@ -1,0 +1,29 @@
+---
+import PlatformPage from '../components/PlatformPage.astro';
+---
+
+<PlatformPage
+  name="Linux"
+  icon="◆"
+  description="ClipTown for Linux is a Flutter desktop client with searchable clipboard history, pins, local encryption, and desktop-environment-aware integrations."
+  summary="A desktop clipboard workspace that adapts to Wayland and X11 capabilities rather than assuming every Linux session exposes the same APIs."
+  capabilities={[
+    'Searchable text, image, file, link, HTML, and rich-text history.',
+    'Tray or desktop-shell access where the environment supports it.',
+    'Pinned favorites, retention rules, and keyboard-first navigation.',
+    'Client-side encryption before backend or peer synchronization.',
+    'Explicit recent-file import through portal-aware file pickers.',
+  ]}
+  boundaries={[
+    'Wayland compositors intentionally restrict global clipboard and hotkey behavior.',
+    'X11 and Wayland adapters expose different capabilities and security tradeoffs.',
+    'Secret Service or desktop keyrings are required for protected device-key storage.',
+    'Flatpak/Snap/AppImage packaging needs independent sandbox validation.',
+  ]}
+  technical={[
+    'Flutter desktop shell with X11, Wayland, and xdg-desktop-portal adapters.',
+    'CI across Ubuntu plus targeted compositor integration tests.',
+    'Secret Service-backed device credentials with documented fallback behavior.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>
