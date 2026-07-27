@@ -1,0 +1,17 @@
+{
+  "name": "ClipTown",
+  "short_name": "ClipTown",
+  "description": "A searchable, encrypted memory for everything you copy.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030914",
+  "theme_color": "#071229",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
