@@ -1,447 +1,186 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const features = [
+  ['⌛', 'History without a tiny ceiling', 'Keep far more than the last 100 copied items. Retention is controlled by storage and policy, not a fixed miniature list.'],
+  ['⌕', 'Search that feels immediate', 'Find text, links, images, and files by content, type, source app, recency, and favorite status.'],
+  ['★', 'Pins that stay pinned', 'Keep commands, addresses, replies, images, and other reusable material in a durable favorites collection.'],
+  ['⇄', 'Encrypted device sync', 'The Rust service coordinates ciphertext and conflict resolution while plaintext and account keys stay on trusted devices.'],
+  ['◉', 'Offline peer continuity', 'Paired devices can exchange encrypted updates over local Wi-Fi or Bluetooth-capable transports when cloud sync is unavailable.'],
+  ['✎', 'Consent-based draft rescue', 'The browser extension can preserve drafts on approved sites, exclude sensitive fields, and keep passive capture off by default.'],
+];
+
+const platforms = [
+  ['/macos', '⌘', 'macOS', 'Menu-bar history, search, pins, and explicit desktop clipboard monitoring.'],
+  ['/windows', '⊞', 'Windows', 'System-tray access with native clipboard integration and quick search.'],
+  ['/linux', '◆', 'Linux', 'Wayland/X11-aware clipboard history with capability detection.'],
+  ['/ios', '◉', 'iPhone & iPad', 'Share sheet, keyboard, Shortcuts, and intentional clipboard import.'],
+  ['/android', '△', 'Android', 'Share targets, quick actions, keyboard integration, and OS-aware capture.'],
+  ['/browser', '◎', 'Browser extension', 'Copy history and consent-based draft recovery for approved domains.'],
+  ['/cli', '>_', 'Rust CLI', 'Search, copy, pin, sync, and diagnose ClipTown from the terminal.'],
+];
+
+const architecture = [
+  ['1', 'Capture locally', 'Desktop, mobile, browser, or CLI creates a typed clip.'],
+  ['2', 'Encrypt on device', 'A random account key encrypts content; the PIN unlocks wrapped key material.'],
+  ['3', 'Sync ciphertext', 'Rust + SeaORM store encrypted envelopes, objects, cursors, and tombstones.'],
+  ['4', 'Search privately', 'Local search is default; blind indexes and server vectors require explicit modes.'],
+  ['5', 'Recover anywhere', 'Trusted devices decrypt locally and reconcile changes deterministically.'],
+];
 ---
 
-<Layout title="Cliptown | True End-to-End Encrypted Clipboard Sync">
-	<!-- Navigation -->
-	<nav class="navbar">
-		<div class="nav-content">
-			<div class="brand">
-				<span class="brand-text">Cliptown</span>
-			</div>
-			<div class="nav-links">
-				<a href="#features">Features</a>
-				<a href="#platforms">Platforms</a>
-				<a href="https://github.com/cliptown" target="_blank" class="btn-outline">GitHub</a>
-			</div>
-		</div>
-	</nav>
+<Layout
+  title="ClipTown — Searchable, encrypted clipboard history everywhere"
+  description="ClipTown is an open-source clipboard platform with deep history, fast search, pins, end-to-end encrypted sync, local peer continuity, Flutter apps, a Rust backend, and a browser extension."
+>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">Open-source preview · active development</span>
+        <h1 id="hero-title">Your clipboard is a <span class="gradient-text">place</span>, not a moment.</h1>
+        <p>
+          ClipTown remembers what you copied, makes it searchable, keeps important items pinned,
+          and synchronizes encrypted history across the devices you trust.
+        </p>
+        <div class="button-row">
+          <a class="button primary" href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noreferrer">Explore the monorepo <span aria-hidden="true">→</span></a>
+          <a class="button secondary" href="#architecture">See how it works</a>
+        </div>
+        <div class="hero-note">Signed production downloads will appear here only after release pipelines and platform review are complete.</div>
+      </div>
 
-	<main class="container">
-		<!-- Hero Section -->
-		<section class="hero">
-			<div class="hero-logo-wrapper">
-				<div class="glow-ring"></div>
-				<img src="/logo.jpg" alt="Cliptown Logo" class="hero-logo" />
-			</div>
-			
-			<h1 class="hero-title">
-				Sync Your Clipboard <br/>
-				<span class="text-gradient">Everywhere.</span>
-			</h1>
-			
-			<p class="hero-subtitle">
-				The ultimate cross-platform clipboard manager powered by 
-				<strong class="highlight">true End-to-End Encryption</strong>. 
-				Your data belongs to you, always.
-			</p>
-			
-			<div class="hero-cta">
-				<a href="#platforms" class="btn-primary">Download Now</a>
-				<a href="#features" class="btn-secondary">Learn More</a>
-			</div>
-		</section>
+      <div class="product-scene" aria-label="Illustration of the ClipTown desktop app">
+        <div class="app-window">
+          <div class="window-bar" aria-hidden="true">
+            <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+          </div>
+          <div class="search-box">⌕ Search clips, images, files, and favorites…</div>
+          <div class="clip-list">
+            <div class="clip-row featured">
+              <div class="clip-icon">★</div>
+              <div class="clip-copy"><strong>Deploy checklist</strong><small>kubectl diff · dpm verify · smoke tests</small></div>
+              <span class="clip-time">pinned</span>
+            </div>
+            <div class="clip-row">
+              <div class="clip-icon">⌘</div>
+              <div class="clip-copy"><strong>git switch agent/marketing-site-v2</strong><small>Terminal · 38 seconds ago</small></div>
+              <span class="clip-time">now</span>
+            </div>
+            <div class="clip-row">
+              <div class="clip-icon">▧</div>
+              <div class="clip-copy"><strong>skyline-concept.png</strong><small>Image · encrypted object</small></div>
+              <span class="clip-time">4m</span>
+            </div>
+            <div class="clip-row">
+              <div class="clip-icon">↗</div>
+              <div class="clip-copy"><strong>https://github.com/cliptown</strong><small>Link · shared from mobile</small></div>
+              <span class="clip-time">8m</span>
+            </div>
+          </div>
+        </div>
+        <div class="sync-toast">● encrypted sync complete</div>
+      </div>
+    </section>
 
-		<!-- Features Highlights -->
-		<section id="features" class="features">
-			<div class="feature-badge">
-				<span class="dot"></span> End-to-End Encrypted
-			</div>
-			<div class="feature-badge">
-				<span class="dot"></span> Real-time Sync
-			</div>
-			<div class="feature-badge">
-				<span class="dot"></span> Open Source
-			</div>
-		</section>
+    <div class="logo-strip" aria-label="ClipTown capabilities">
+      <span>Text</span><span>Images</span><span>Files</span><span>Favorites</span><span>Local search</span><span>Encrypted sync</span><span>Peer sync</span>
+    </div>
 
-		<!-- Platforms Grid -->
-		<section id="platforms" class="platforms-section">
-			<h2 class="section-title">Available on all your devices</h2>
-			
-			<ul role="list" class="platform-grid">
-				<li class="platform-card">
-					<a href="/macos">
-						<div class="card-icon">🍎</div>
-						<h3>macOS</h3>
-						<p>Native menu bar app built with Rust and Flutter. Instant sync for your Mac.</p>
-						<span class="card-action">Download for Mac &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/windows">
-						<div class="card-icon">🪟</div>
-						<h3>Windows</h3>
-						<p>System tray integration. Runs quietly in the background on your PC.</p>
-						<span class="card-action">Download for Windows &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/ios">
-						<div class="card-icon">📱</div>
-						<h3>iOS</h3>
-						<p>Secure mobile app. Copy on your phone, paste on your desktop.</p>
-						<span class="card-action">App Store &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/android">
-						<div class="card-icon">🤖</div>
-						<h3>Android</h3>
-						<p>Native Android integration. Your clipboard in your pocket.</p>
-						<span class="card-action">Google Play &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/cli">
-						<div class="card-icon">⌨️</div>
-						<h3>Terminal CLI</h3>
-						<p>For power users. Manage your clips straight from the command line.</p>
-						<span class="card-action">Install CLI &rarr;</span>
-					</a>
-				</li>
-				<li class="platform-card">
-					<a href="/chrome">
-						<div class="card-icon">🌐</div>
-						<h3>Browser Extension</h3>
-						<p>Capture text directly from your browser without hitting Cmd+C.</p>
-						<span class="card-action">Chrome Web Store &rarr;</span>
-					</a>
-				</li>
-			</ul>
-		</section>
-	</main>
+    <section id="features" class="section" aria-labelledby="features-title">
+      <div class="section-head">
+        <div><span class="eyebrow">Built for recall</span></div>
+        <div>
+          <h2 id="features-title">Stop losing useful things to the next copy.</h2>
+          <p>ClipTown is designed as a complete clipboard platform rather than a narrow tray utility.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        {features.map(([icon, title, body]) => (
+          <article class="card">
+            <div class="feature-icon" aria-hidden="true">{icon}</div>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
 
-	<footer>
-		<div class="footer-content">
-			<p>&copy; {new Date().getFullYear()} Cliptown. Open source and secure.</p>
-		</div>
-	</footer>
+    <section class="section" aria-labelledby="security-title">
+      <div class="security-panel">
+        <div class="security-copy">
+          <span class="eyebrow">Privacy by architecture</span>
+          <h2 id="security-title">The backend moves ciphertext, not your thoughts.</h2>
+          <p>
+            Clip content is encrypted before upload. A six-digit PIN is not used as a weak encryption key;
+            it helps unlock device-protected wrapped key material. Biometrics remain local platform factors.
+          </p>
+          <div class="button-row">
+            <a class="button secondary" href="/security">Read the security model</a>
+          </div>
+        </div>
+        <div class="security-list">
+          <div class="security-item"><strong>Local-first search</strong><span>Plaintext indexing and RAG stay on device by default.</span></div>
+          <div class="security-item"><strong>Explicit server search modes</strong><span>Blind indexes and vector search are separate, opt-in privacy choices.</span></div>
+          <div class="security-item"><strong>Layered authentication</strong><span>Supabase identity can be stepped up through 3FA and shared-auth integrations.</span></div>
+          <div class="security-item"><strong>Reauthentication policy</strong><span>Ten days by default, configurable up to twenty days with recent step-up verification.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="platforms" class="section" aria-labelledby="platforms-title">
+      <div class="section-head">
+        <div><span class="eyebrow">One history, many surfaces</span></div>
+        <div>
+          <h2 id="platforms-title">Designed for every place you copy.</h2>
+          <p>Each platform follows its operating-system rules instead of claiming impossible background access.</p>
+        </div>
+      </div>
+      <div class="platform-grid">
+        {platforms.map(([href, icon, name, body]) => (
+          <a class="platform-card" href={href}>
+            <div class="platform-top">
+              <span class="feature-icon" aria-hidden="true">{icon}</span>
+              <span class="status-pill">In development</span>
+            </div>
+            <h3>{name}</h3>
+            <p>{body}</p>
+            <span class="arrow">View platform plan →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="architecture" class="section" aria-labelledby="architecture-title">
+      <div class="section-head">
+        <div><span class="eyebrow">System flow</span></div>
+        <div>
+          <h2 id="architecture-title">Local trust, durable coordination.</h2>
+          <p>The product separates capture, encryption, sync, search, and recovery so privacy decisions stay explicit.</p>
+        </div>
+      </div>
+      <div class="architecture">
+        {architecture.map(([number, title, body]) => (
+          <div class="arch-step">
+            <span class="tag">Step {number}</span>
+            <strong>{title}</strong>
+            <span>{body}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="cta-panel">
+        <div>
+          <span class="eyebrow">Help build the town</span>
+          <h2>Follow development, open an issue, or support the project.</h2>
+          <p>ClipTown is being developed in public across Rust, Flutter, TypeScript, Dart, Kubernetes, and browser-extension repositories.</p>
+        </div>
+        <div class="button-row">
+          <a class="button primary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
+          <a class="button secondary" href="/support">Support options</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
-
-<style>
-	/* --- Layout & Spacing --- */
-	.container {
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		padding-top: 100px; /* offset for fixed nav */
-	}
-
-	/* --- Navbar --- */
-	.navbar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 70px;
-		background: rgba(11, 15, 25, 0.7);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-		border-bottom: 1px solid var(--glass-border);
-		z-index: 100;
-		display: flex;
-		align-items: center;
-	}
-	
-	.nav-content {
-		width: 100%;
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.brand-text {
-		font-size: 1.5rem;
-		font-weight: 800;
-		letter-spacing: -0.5px;
-		background: var(--text-main);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-		align-items: center;
-	}
-
-	.nav-links a:not(.btn-outline) {
-		color: var(--text-muted);
-		text-decoration: none;
-		font-size: 0.95rem;
-		font-weight: 500;
-		transition: color 0.2s ease;
-	}
-	.nav-links a:hover:not(.btn-outline) {
-		color: var(--text-main);
-	}
-
-	/* --- Hero Section --- */
-	.hero {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		padding: 6rem 0 4rem;
-	}
-
-	.hero-logo-wrapper {
-		position: relative;
-		margin-bottom: 3rem;
-		width: 120px;
-		height: 120px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.glow-ring {
-		position: absolute;
-		top: -15%;
-		left: -15%;
-		right: -15%;
-		bottom: -15%;
-		background: var(--accent-gradient);
-		border-radius: 50%;
-		filter: blur(30px);
-		opacity: 0.6;
-		animation: pulse-glow 4s ease-in-out infinite alternate;
-		z-index: 1;
-	}
-
-	@keyframes pulse-glow {
-		0% { transform: scale(0.95); opacity: 0.5; }
-		100% { transform: scale(1.05); opacity: 0.8; }
-	}
-
-	.hero-logo {
-		width: 120px;
-		height: 120px;
-		border-radius: 28px;
-		object-fit: cover;
-		z-index: 2;
-		box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-		border: 2px solid rgba(255,255,255,0.1);
-	}
-
-	.hero-title {
-		font-size: clamp(3rem, 8vw, 5rem);
-		font-weight: 800;
-		line-height: 1.1;
-		margin: 0 0 1.5rem 0;
-		letter-spacing: -1.5px;
-	}
-
-	.text-gradient {
-		background: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		display: inline-block;
-	}
-
-	.hero-subtitle {
-		font-size: 1.25rem;
-		color: var(--text-muted);
-		max-width: 600px;
-		line-height: 1.6;
-		margin: 0 0 3rem 0;
-	}
-
-	.highlight {
-		color: var(--text-main);
-		font-weight: 600;
-	}
-
-	/* --- Buttons --- */
-	.hero-cta {
-		display: flex;
-		gap: 1.5rem;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
-	.btn-primary, .btn-secondary, .btn-outline {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.875rem 2rem;
-		border-radius: 99px;
-		font-weight: 600;
-		font-size: 1rem;
-		text-decoration: none;
-		transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-		cursor: pointer;
-	}
-
-	.btn-primary {
-		background: var(--accent-gradient);
-		color: #fff;
-		box-shadow: 0 4px 15px var(--accent-glow);
-		border: none;
-	}
-	.btn-primary:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 25px var(--accent-glow);
-	}
-
-	.btn-secondary {
-		background: var(--glass-bg);
-		color: var(--text-main);
-		border: 1px solid var(--glass-border);
-		backdrop-filter: blur(10px);
-	}
-	.btn-secondary:hover {
-		background: rgba(255,255,255,0.1);
-		transform: translateY(-2px);
-	}
-
-	.btn-outline {
-		padding: 0.5rem 1.25rem;
-		font-size: 0.875rem;
-		border: 1px solid var(--glass-border);
-		border-radius: 8px;
-		color: var(--text-main);
-	}
-	.btn-outline:hover {
-		background: rgba(255,255,255,0.05);
-		border-color: rgba(255,255,255,0.2);
-	}
-
-	/* --- Features Badges --- */
-	.features {
-		display: flex;
-		justify-content: center;
-		gap: 2rem;
-		flex-wrap: wrap;
-		margin-bottom: 6rem;
-	}
-	
-	.feature-badge {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background: var(--glass-bg);
-		border: 1px solid var(--glass-border);
-		padding: 0.5rem 1rem;
-		border-radius: 99px;
-		font-size: 0.9rem;
-		font-weight: 500;
-		color: var(--text-muted);
-	}
-	
-	.dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: #10b981;
-		box-shadow: 0 0 10px #10b981;
-	}
-
-	/* --- Platforms Section --- */
-	.platforms-section {
-		padding: 4rem 0 8rem;
-	}
-
-	.section-title {
-		font-size: 2.5rem;
-		font-weight: 700;
-		text-align: center;
-		margin-bottom: 4rem;
-		letter-spacing: -0.5px;
-	}
-
-	.platform-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		padding: 0;
-		list-style: none;
-	}
-
-	.platform-card {
-		display: flex;
-	}
-
-	.platform-card a {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		background: var(--glass-bg);
-		border: 1px solid var(--glass-border);
-		border-radius: 16px;
-		padding: 2.5rem;
-		text-decoration: none;
-		color: var(--text-main);
-		transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		backdrop-filter: blur(10px);
-	}
-
-	.platform-card a:hover {
-		transform: translateY(-8px);
-		background: rgba(45, 55, 72, 0.5);
-		border-color: rgba(139, 92, 246, 0.4);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(139, 92, 246, 0.15);
-	}
-
-	.card-icon {
-		font-size: 3rem;
-		margin-bottom: 1.5rem;
-		filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-	}
-
-	.platform-card h3 {
-		font-size: 1.5rem;
-		font-weight: 600;
-		margin: 0 0 1rem 0;
-	}
-
-	.platform-card p {
-		color: var(--text-muted);
-		line-height: 1.6;
-		margin: 0 0 2rem 0;
-		font-size: 0.95rem;
-		flex-grow: 1;
-	}
-
-	.card-action {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--primary);
-		display: flex;
-		align-items: center;
-		transition: color 0.3s ease;
-	}
-
-	.platform-card a:hover .card-action {
-		color: var(--secondary);
-	}
-
-	/* --- Footer --- */
-	footer {
-		border-top: 1px solid var(--glass-border);
-		padding: 3rem 0;
-		text-align: center;
-	}
-
-	.footer-content p {
-		color: var(--text-muted);
-		font-size: 0.9rem;
-	}
-
-	/* Responsive */
-	@media (max-width: 768px) {
-		.hero-title {
-			font-size: 3rem;
-		}
-		.nav-links {
-			display: none;
-		}
-		.platform-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-</style>
