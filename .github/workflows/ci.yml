@@ -31,7 +31,7 @@ jobs:
         run: npm run build
       - name: Check generated HTML for placeholder links
         run: |
-          if grep -RInE 'href=["'"']#["'"']|Astro Starter Kit|Download for Apple Silicon' dist; then
+          if grep -RInE "href=[\"']#[\"']|Astro Starter Kit|Download for Apple Silicon" dist; then
             echo 'placeholder content found in generated site'
             exit 1
           fi
