@@ -2,91 +2,88 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="ClipTown security model" description="How ClipTown approaches client-side encryption, device keys, PIN unlock, biometrics, Supabase identity, 3FA, shared-auth, private search, and peer synchronization.">
-  <main class="security-main shell">
-    <section class="security-hero">
-      <p class="eyebrow">Security architecture · design target</p>
-      <h1>Encrypted by devices.<br /><em>Coordinated by services.</em></h1>
-      <p class="lede">ClipTown is designed so backend services synchronize approved metadata and ciphertext without receiving the plaintext contents of ordinary clipboard history.</p>
+<Layout
+  title="ClipTown security model"
+  description="How ClipTown approaches client-side encryption, device keys, PIN unlock, biometrics, Supabase identity, 3FA, shared-auth, private search, and peer synchronization."
+>
+  <div class="narrow">
+    <section class="page-hero">
+      <span class="eyebrow">Security architecture · design target</span>
+      <h1>Encrypted by devices. Coordinated by services.</h1>
+      <p>ClipTown is designed so backend services can synchronize and search approved metadata without receiving the plaintext contents of ordinary clipboard history.</p>
     </section>
 
-    <aside class="audit-note">ClipTown is under active development and has not completed an independent security audit. This page describes the intended architecture and review requirements, not a certification.</aside>
+    <div class="callout">
+      ClipTown is under active development and has not yet completed an independent security audit. The statements below describe the intended architecture and review requirements, not a certification.
+    </div>
 
-    <section class="security-grid">
-      <article class="security-card surface">
-        <span>01</span><h2>Random account keys</h2><p>A high-entropy master key is generated on a trusted device. Clips and large objects use authenticated encryption before synchronization.</p>
-      </article>
-      <article class="security-card surface">
-        <span>02</span><h2>PIN as an unlock factor</h2><p>A six-digit PIN does not encrypt the archive directly. It helps unlock wrapped key material under rate limits and step-up policy.</p>
-      </article>
-      <article class="security-card surface">
-        <span>03</span><h2>Local biometrics</h2><p>Face, fingerprint, or voice assertions authorize protected device keys through trusted OS or 3FA APIs. Raw biometric templates are not uploaded.</p>
-      </article>
-      <article class="security-card surface">
-        <span>04</span><h2>Layered identity</h2><p>Supabase Auth provides identity while 3FA and shared-auth can add device and authentication-method assertions for sensitive operations.</p>
-      </article>
-    </section>
+    <article class="prose">
+      <h2>Account and device keys</h2>
+      <p>
+        Each account receives a high-entropy random master key generated on a trusted device. Clips are encrypted with modern authenticated encryption, and large objects such as images or files use dedicated object keys. Device public keys wrap account material for trusted-device enrollment and recovery.
+      </p>
 
-    <section class="search-section">
-      <div class="section-heading">
-        <div><p class="eyebrow">Search privacy</p><h2>Choose the leakage boundary explicitly.</h2></div>
-        <p>Plaintext search and RAG stay local by default. Server-assisted modes are separate choices with documented tradeoffs.</p>
+      <h2>The six-digit PIN is an unlock factor, not an encryption key</h2>
+      <p>
+        A six-digit PIN does not contain enough entropy to safely encrypt an entire clipboard archive by itself. ClipTown uses it only as one local or 3FA-mediated factor for unlocking wrapped key material, with rate limits, device protection, and step-up policy around that operation.
+      </p>
+
+      <h2>Biometrics stay on the operating system</h2>
+      <p>
+        Face, fingerprint, or voice recognition should be implemented through trusted operating-system or 3FA challenge APIs. ClipTown must not upload raw biometric templates. A successful local assertion authorizes use of a protected device key.
+      </p>
+
+      <h2>Identity and layered authentication</h2>
+      <p>
+        Supabase Auth is the primary identity provider. Integrations with 3FA and shared-auth can supply step-up factors and device assertions. Access tokens should include device identity and authentication-method references so the Rust backend can enforce sensitive operations such as key enrollment or security-policy changes.
+      </p>
+
+      <h2>Reauthentication</h2>
+      <p>
+        The default policy requires reauthentication after ten days. A user may extend it up to twenty days after recent step-up authentication. Revoked devices and compromised sessions must be invalidated immediately rather than waiting for the interval to expire.
+      </p>
+
+      <h2>Search privacy modes</h2>
+      <div class="detail-grid">
+        <section class="detail-card">
+          <h3>Local-only</h3>
+          <p>Plaintext full-text indexing, OCR, image labels, embeddings, and RAG run on the trusted device. This is the default mode.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Blind index</h3>
+          <p>Clients send keyed token digests that can retrieve encrypted candidates without revealing ordinary query text. Leakage and frequency tradeoffs must be documented.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Opt-in vector</h3>
+          <p>A user may explicitly upload an embedding for server-side candidate search. The UI must explain that embeddings can reveal semantic information.</p>
+        </section>
+        <section class="detail-card">
+          <h3>Client-side RAG</h3>
+          <p>The server returns encrypted candidates; the device decrypts, ranks, and builds retrieval context locally.</p>
+        </section>
       </div>
-      <div class="mode-grid">
-        <article><b>Local-only</b><p>Full-text indexing, OCR, image labels, embeddings, and RAG run on the trusted device.</p></article>
-        <article><b>Blind index</b><p>Clients upload keyed token digests to retrieve encrypted candidates without ordinary query text.</p></article>
-        <article><b>Opt-in vector</b><p>A user may explicitly upload embeddings for server-side candidate search after a semantic-leakage warning.</p></article>
-        <article><b>Client-side rerank</b><p>The device decrypts candidates, reranks them, and builds retrieval context locally.</p></article>
+
+      <h2>Backend data</h2>
+      <p>
+        The Rust service stores user-scoped ciphertext envelopes, encrypted metadata, object references, blind-index tokens, optional embeddings, device records, idempotency keys, sync sequences, and deletion tombstones. PostgreSQL row-level security and application authorization both constrain access.
+      </p>
+
+      <h2>Peer synchronization</h2>
+      <p>
+        Local Wi-Fi and Bluetooth-capable transports still exchange signed, encrypted envelopes. Discovery is not trust: devices must pair through authenticated key exchange, verify identities, and reconcile mutations using deterministic clocks and tombstones.
+      </p>
+
+      <h2>Responsible disclosure</h2>
+      <p>
+        Until a dedicated security contact and policy are published, report sensitive findings privately to the organization owner rather than opening a public issue. A formal <code>SECURITY.md</code> and disclosure process belong in every production repository before launch.
+      </p>
+    </article>
+
+    <section class="section">
+      <div class="button-row">
+        <a class="button primary" href="https://github.com/cliptown/cliptown-rust-backend.rs" target="_blank" rel="noreferrer">Inspect the Rust backend ↗</a>
+        <a class="button secondary" href="https://github.com/cliptown/cliptown-interfaces" target="_blank" rel="noreferrer">Review wire contracts ↗</a>
       </div>
     </section>
-
-    <section class="architecture-section surface">
-      <div>
-        <p class="eyebrow">Backend contract</p>
-        <h2>The service stores synchronization state, not casual plaintext.</h2>
-      </div>
-      <ul>
-        <li>User-scoped ciphertext envelopes and encrypted metadata.</li>
-        <li>Encrypted object references for images and files.</li>
-        <li>Device records, idempotency keys, sync cursors, sequences, and tombstones.</li>
-        <li>Blind-index terms and optional embeddings only under the selected privacy mode.</li>
-        <li>PostgreSQL row-level security plus Rust application authorization.</li>
-      </ul>
-    </section>
-
-    <section class="security-cta">
-      <a class="button button-primary" href="https://github.com/cliptown/cliptown-rust-backend.rs" target="_blank" rel="noreferrer">Inspect the Rust backend ↗</a>
-      <a class="button button-secondary" href="https://github.com/cliptown/cliptown-interfaces" target="_blank" rel="noreferrer">Review wire contracts ↗</a>
-    </section>
-  </main>
+  </div>
 </Layout>
-
-<style>
-  .security-main { padding-top: 4rem; padding-bottom: 2rem; }
-  .security-hero { max-width: 62rem; padding: 3rem 0; }
-  .security-hero h1 { margin-bottom: 1.4rem; }
-  .security-hero h1 em { font-style: normal; color: transparent; background: linear-gradient(105deg,var(--red-400),var(--blue-400) 78%); background-clip: text; -webkit-background-clip: text; }
-  .lede { max-width: 50rem; font-size: 1.15rem; }
-  .audit-note { margin-bottom: 2rem; padding: 1rem 1.2rem; border: 1px solid rgba(255,92,120,.25); border-radius: .8rem; color: #ffb5c2; background: rgba(255,49,88,.07); font-size: .82rem; line-height: 1.6; }
-  .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .security-card { min-height: 18rem; padding: 2rem; border-radius: 1.1rem; }
-  .security-card > span { color: var(--red-300); font-size: .7rem; font-weight: 850; }
-  .security-card h2 { margin: 2.6rem 0 .8rem; font-size: 1.65rem; }
-  .security-card p { margin-bottom: 0; }
-  .search-section { padding: 7rem 0; }
-  .section-heading { display: grid; grid-template-columns: 1fr minmax(20rem,.55fr); align-items: end; gap: 4rem; margin-bottom: 2.5rem; }
-  .section-heading h2, .section-heading > p { margin-bottom: 0; }
-  .mode-grid { display: grid; grid-template-columns: repeat(4,1fr); border-block: 1px solid var(--line); }
-  .mode-grid article { padding: 1.5rem; border-right: 1px solid var(--line); }
-  .mode-grid article:first-child { border-left: 1px solid var(--line); }
-  .mode-grid b { color: var(--ink-strong); }
-  .mode-grid p { margin: .75rem 0 0; font-size: .82rem; }
-  .architecture-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; padding: clamp(1.5rem,4vw,3rem); border-radius: 1.2rem; }
-  .architecture-section h2 { font-size: clamp(2rem,4vw,3.5rem); }
-  .architecture-section ul { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
-  .architecture-section li { padding: 0 0 1rem 1.3rem; border-bottom: 1px solid var(--line); color: var(--ink-muted); line-height: 1.6; position: relative; }
-  .architecture-section li::before { content: '◆'; position: absolute; left: 0; top: .3rem; color: var(--blue-400); font-size: .6rem; }
-  .security-cta { display: flex; flex-wrap: wrap; gap: .75rem; padding: 2rem 0 4rem; }
-  @media (max-width: 860px) { .mode-grid { grid-template-columns: 1fr 1fr; } .architecture-section, .section-heading { grid-template-columns: 1fr; gap: 1.5rem; } }
-  @media (max-width: 640px) { .security-grid, .mode-grid { grid-template-columns: 1fr; } .mode-grid article { border-left: 1px solid var(--line); } }
-</style>

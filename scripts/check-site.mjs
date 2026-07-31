@@ -2,31 +2,30 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 
 const root = process.cwd();
-const errors = [];
 const required = [
+  'public/brand-mark.svg',
   'public/favicon.svg',
-  'public/logo.svg',
-  'public/social-card.svg',
   'public/site.webmanifest',
-  'src/components/SiteHeader.astro',
-  'src/components/SiteFooter.astro',
+  'src/layouts/Layout.astro',
+  'src/pages/index.astro',
   'src/pages/security.astro',
   'src/pages/support.astro',
 ];
+const errors = [];
 
 for (const file of required) {
   if (!existsSync(join(root, file))) errors.push(`missing required file: ${file}`);
 }
 
-function walk(directory) {
-  return readdirSync(directory).flatMap((entry) => {
-    const path = join(directory, entry);
+function walk(dir) {
+  return readdirSync(dir).flatMap((entry) => {
+    const path = join(dir, entry);
     return statSync(path).isDirectory() ? walk(path) : [path];
   });
 }
 
-const files = walk(join(root, 'src')).filter((file) => ['.astro', '.ts'].includes(extname(file)));
-const pageRoutes = new Set(
+const sourceFiles = walk(join(root, 'src')).filter((file) => ['.astro', '.ts', '.css'].includes(extname(file)));
+const pages = new Set(
   walk(join(root, 'src/pages'))
     .filter((file) => file.endsWith('.astro'))
     .map((file) => {
@@ -35,26 +34,34 @@ const pageRoutes = new Set(
     }),
 );
 
-for (const file of files) {
-  const label = relative(root, file);
+for (const file of sourceFiles) {
+  const rel = relative(root, file);
   const text = readFileSync(file, 'utf8');
-  if (/href=["']#["']/.test(text)) errors.push(`${label}: placeholder href="#"`);
-  if (/Astro Starter Kit|Astro Basics|Download for Apple Silicon|Download for Windows \(x64\)|Get it on Google Play|Download on the App Store/.test(text)) {
-    errors.push(`${label}: stale starter or unverified download copy`);
+  if (/href=["']#["']/.test(text)) errors.push(`${rel}: placeholder href="#"`);
+  if (/Astro Starter Kit|Astro Basics/.test(text)) errors.push(`${rel}: starter copy remains`);
+  if (/Download for Apple Silicon|Download for Windows \(x64\)|Get it on Google Play|Download on the App Store/.test(text)) {
+    errors.push(`${rel}: unverified production download copy remains`);
   }
+  // DEN-58: the site must never ship an unverified funding fallback.
   if (/https:\/\/www\.patreon\.com\/cliptown/i.test(text)) {
-    errors.push(`${label}: unverified Patreon fallback URL`);
+    errors.push(`${rel}: unverified Patreon fallback URL`);
   }
   if (/PUBLIC_PATREON_URL\s*\?\?\s*["']https?:\/\//.test(text)) {
-    errors.push(`${label}: PUBLIC_PATREON_URL must not have an external fallback`);
+    errors.push(`${rel}: PUBLIC_PATREON_URL must not have an external fallback`);
   }
   for (const match of text.matchAll(/href=["'](\/[^"'#?]*)[^"']*["']/g)) {
-    const route = match[1].replace(/\/$/, '') || '/';
-    if (route.includes('.')) continue;
-    if (!pageRoutes.has(route)) errors.push(`${label}: unresolved internal route ${route}`);
+    const path = match[1].replace(/\/$/, '') || '/';
+    if (path.includes('.') || path.startsWith('/#')) continue;
+    if (!pages.has(path)) errors.push(`${rel}: unresolved internal route ${path}`);
   }
 }
 
+const favicon = readFileSync(join(root, 'public/favicon.svg'), 'utf8');
+if (!/clipboard|ClipTown|linearGradient/i.test(favicon)) {
+  errors.push('public/favicon.svg does not appear to contain the ClipTown mark');
+}
+
+// DEN-58: the support page must fail closed when no verified destination exists.
 const supportPage = readFileSync(join(root, 'src/pages/support.astro'), 'utf8');
 if (!supportPage.includes('Support destination pending verification')) {
   errors.push('src/pages/support.astro: missing fail-closed support status');
@@ -63,8 +70,8 @@ if (!supportPage.includes('The site has no fallback funding URL.')) {
   errors.push('src/pages/support.astro: missing no-fallback support disclosure');
 }
 
-if (errors.length > 0) {
+if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`site checks passed (${files.length} source files, ${pageRoutes.size} routes)`);
+console.log(`site checks passed (${sourceFiles.length} source files, ${pages.size} routes)`);

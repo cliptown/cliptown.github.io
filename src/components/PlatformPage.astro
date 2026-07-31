@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export interface Props {
+  name: string;
+  icon: string;
+  description: string;
+  summary: string;
+  capabilities: string[];
+  boundaries: string[];
+  repository: string;
+  technical?: string[];
+}
+
+const {
+  name,
+  icon,
+  description,
+  summary,
+  capabilities,
+  boundaries,
+  repository,
+  technical = [],
+} = Astro.props;
+---
+
+<Layout title={`ClipTown for ${name}`} description={description}>
+  <div class="container">
+    <section class="page-hero">
+      <span class="eyebrow">{icon} Platform plan · active development</span>
+      <h1>ClipTown for <span class="gradient-text">{name}</span></h1>
+      <p>{summary}</p>
+      <div class="button-row">
+        <a class="button primary" href={repository} target="_blank" rel="noreferrer">Follow the repository ↗</a>
+        <a class="button secondary" href="/#platforms">All platforms</a>
+      </div>
+    </section>
+
+    <div class="callout info">
+      Production downloads are not published yet. This page documents the intended capability and platform boundaries without presenting placeholder installers as real releases.
+    </div>
+
+    <section class="section">
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h2>Planned capabilities</h2>
+          <ul>
+            {capabilities.map((item) => <li>{item}</li>)}
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h2>Platform boundaries</h2>
+          <ul>
+            {boundaries.map((item) => <li>{item}</li>)}
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    {technical.length > 0 && (
+      <section class="section">
+        <div class="section-head">
+          <div><span class="eyebrow">Implementation</span></div>
+          <div>
+            <h2>Built as a real platform client.</h2>
+            <p>The application uses shared contracts while keeping operating-system integration behind explicit adapters.</p>
+          </div>
+        </div>
+        <div class="card-grid">
+          {technical.map((item, index) => (
+            <article class="card">
+              <div class="feature-icon" aria-hidden="true">{index + 1}</div>
+              <h3>{item}</h3>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="section">
+      <div class="cta-panel">
+        <div>
+          <h2>Help shape the {name} client.</h2>
+          <p>Open an issue with platform-specific constraints, test plans, accessibility needs, or integration ideas.</p>
+        </div>
+        <div class="button-row">
+          <a class="button primary" href={repository} target="_blank" rel="noreferrer">Open repository ↗</a>
+          <a class="button secondary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">ClipTown org ↗</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
