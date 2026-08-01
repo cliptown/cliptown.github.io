@@ -50,4 +50,4 @@ A funding link appears only when the `PUBLIC_PATREON_URL` environment variable i
 PUBLIC_PATREON_URL="https://www.example.com/verified-destination" npm run build
 ```
 
-This is enforced in three places, so removing any one of them still fails the build: `check:site` (sources), `check:dist` (published artifact), the Playwright suite (rendered pages), and the artifact gate in `.github/workflows/deploy.yml`.
+This is enforced in four independent places, so removing any one of them still fails the build: `check:site` (sources), `check:dist` (published artifact), the Playwright suite (rendered pages), and the artifact gate in `.github/workflows/deploy.yml`.
