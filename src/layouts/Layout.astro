@@ -16,9 +16,9 @@ const {
   noindex = false,
 } = Astro.props;
 
-// DEN-58: no fallback funding URL. An external support destination appears
-// only when PUBLIC_PATREON_URL is explicitly configured after ownership verification.
-const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
+// DEN-58: no fallback funding URL. An external support destination appears only
+// when PUBLIC_PATREON_URL is explicitly configured, after ownership verification,
+// and only when it parses as an absolute http(s) URL. See src/lib/support.ts.
 
 const site = Astro.site ?? new URL('https://cliptown.github.io');
 const canonical = new URL(Astro.url.pathname, site);
