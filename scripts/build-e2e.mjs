@@ -6,15 +6,14 @@
  * builds. Producing both here (sequentially, to avoid two Astro processes
  * racing on the same `.astro/` cache) keeps the Playwright config to plain
  * static file serving.
- *
- *   dist/                     PUBLIC_PATREON_URL explicitly empty -> fail closed
- *   dist-e2e-configured/      PUBLIC_PATREON_URL set to a test destination
  */
 import { spawnSync } from 'node:child_process';
-import { rmSync } from 'node:child_process' in globalThis ? await import('node:fs') : await import('node:fs');
-
-export const CONFIGURED_SUPPORT_URL = 'https://example.com/cliptown-verified-support';
-export const CONFIGURED_OUT_DIR = 'dist-e2e-configured';
+import { rmSync } from 'node:fs';
+import {
+  CONFIGURED_OUT_DIR,
+  CONFIGURED_SUPPORT_URL,
+  FAIL_CLOSED_OUT_DIR,
+} from '../tests/e2e-constants.mjs';
 
 function build({ outDir, supportUrl, label }) {
   console.log(`\n[build:e2e] ${label} -> ${outDir}`);
@@ -25,9 +24,9 @@ function build({ outDir, supportUrl, label }) {
     ['node_modules/astro/astro.js', 'build', '--outDir', outDir],
     {
       stdio: 'inherit',
-      // An explicit empty string beats an unset variable here: it also
+      // An explicit empty string beats simply unsetting the variable: it also
       // overrides anything a local .env file might inject, so the fail-closed
-      // build is genuinely unconfigured.
+      // build is genuinely unconfigured on every machine.
       env: { ...process.env, PUBLIC_PATREON_URL: supportUrl },
     },
   );
@@ -38,7 +37,11 @@ function build({ outDir, supportUrl, label }) {
   }
 }
 
-build({ outDir: 'dist', supportUrl: '', label: 'fail-closed build (PUBLIC_PATREON_URL empty)' });
+build({
+  outDir: FAIL_CLOSED_OUT_DIR,
+  supportUrl: '',
+  label: 'fail-closed build (PUBLIC_PATREON_URL empty)',
+});
 build({
   outDir: CONFIGURED_OUT_DIR,
   supportUrl: CONFIGURED_SUPPORT_URL,
