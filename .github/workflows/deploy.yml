@@ -17,31 +17,50 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
       - name: Configure Pages
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Install locked dependencies
         run: npm ci
+      # `npm test` runs check:site, builds, then re-validates the built output.
       - name: Validate and build
         run: npm test
-      - name: Verify required brand assets and support policy
+      - name: Verify required brand assets
         run: |
           test -s public/favicon.svg
           test -s public/brand-mark.svg
           test -s public/site.webmanifest
           grep -q 'ClipTown' public/site.webmanifest
-          grep -q 'PUBLIC_PATREON_URL' src/layouts/Layout.astro
-          grep -q 'GitHub organization' src/layouts/Layout.astro
+      # DEN-58: gate on the artifact that is about to be published, not on the
+      # sources that produced it. The previous source greps were satisfied by a
+      # comment mentioning PUBLIC_PATREON_URL and never inspected dist/ at all.
+      - name: Verify the artifact publishes no unverified funding link
+        run: |
+          set -euo pipefail
+          if grep -RIlin 'patreon\.com/cliptown' dist; then
+            echo '::error::built artifact contains the unverified Patreon fallback URL'
+            exit 1
+          fi
+          if [ -z "${PUBLIC_PATREON_URL:-}" ]; then
+            if grep -RIlinE 'https?://(www\.)?(patreon|ko-fi|buymeacoffee|opencollective|liberapay)\.com' dist; then
+              echo '::error::built artifact publishes a funding link but PUBLIC_PATREON_URL is unset'
+              exit 1
+            fi
+            grep -q 'Support destination pending verification' dist/support/index.html
+          fi
+          grep -q 'The site has no fallback funding URL.' dist/support/index.html
+          grep -q 'GitHub organization' dist/index.html
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ./dist
 
