@@ -51,7 +51,7 @@ test.describe('internal link integrity', () => {
     for (const [target, hashes] of anchorsByPage) {
       await page.goto(target);
       for (const hash of hashes) {
-        if ((await page.locator(`#${CSS.escape ? hash : hash}`).count()) === 0) {
+        if ((await page.locator(`[id="${hash}"]`).count()) === 0) {
           missing.push(`${target}#${hash}`);
         }
       }
