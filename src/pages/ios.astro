@@ -1,26 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PlatformPlan from '../components/PlatformPlan.astro';
+import PlatformPage from '../components/PlatformPage.astro';
 ---
 
-<Layout title="ClipTown for iPhone and iPad" description="ClipTown for iOS provides intentional clipboard import, share-sheet capture, keyboard access, local search, and encrypted synchronization.">
-  <PlatformPlan
-    name="iPhone & iPad"
-    icon="◉"
-    summary="A mobile clipboard library that works with iOS privacy boundaries instead of pretending an app can monitor every copy in the background."
-    capabilities={[
-      'Import the current clipboard after a user gesture and platform permission prompt.',
-      'Save text, links, images, and files through a Share extension.',
-      'Paste pinned clips through a custom keyboard and Shortcuts actions.',
-      'Search and decrypt synchronized history locally.',
-      'Approve step-up authentication with Face ID or Touch ID on-device.',
-    ]}
-    boundaries={[
-      'iOS does not permit unrestricted continuous background clipboard monitoring.',
-      'Clipboard reads may show system privacy prompts and require a clear user action.',
-      'Custom keyboards have strict sandbox and network-access constraints.',
-      'App Store review and privacy manifests must be complete before release.',
-    ]}
-    repository="https://github.com/cliptown/cliptown-flutter"
-  />
-</Layout>
+<PlatformPage
+  name="iPhone & iPad"
+  icon="◉"
+  description="ClipTown for iOS and iPadOS provides intentional clipboard import, share-sheet capture, keyboard access, local search, and encrypted synchronization."
+  summary="A mobile clipboard library that works with iOS privacy boundaries instead of pretending an app can monitor every copy in the background."
+  capabilities={[
+    'Import the current clipboard after a user gesture and platform permission prompt.',
+    'Save text, links, images, and files through a Share extension.',
+    'Paste pinned clips through a custom keyboard and Shortcuts actions.',
+    'Search and decrypt synchronized history locally.',
+    'Approve step-up authentication with Face ID or Touch ID on-device.',
+  ]}
+  boundaries={[
+    'iOS does not permit unrestricted continuous background clipboard monitoring.',
+    'Clipboard reads may show system privacy prompts and always require a clear user action.',
+    'Custom keyboards have strict sandbox and network-access constraints.',
+    'App Store review and privacy manifests must be complete before release.',
+  ]}
+  technical={[
+    'Flutter application with native Share, Keyboard, and Shortcuts extensions.',
+    'Keychain/Secure Enclave protection for device keys where supported.',
+    'Simulator tests plus physical-device validation for clipboard privacy behavior.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>

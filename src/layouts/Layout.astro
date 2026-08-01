@@ -1,20 +1,43 @@
 ---
 import '../styles/global.css';
-import SiteFooter from '../components/SiteFooter.astro';
-import SiteHeader from '../components/SiteHeader.astro';
 
 export interface Props {
   title: string;
   description?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = 'ClipTown is a private, searchable clipboard history that syncs encrypted text, images, links, and files across your devices.',
+  description = 'ClipTown is an open-source, encrypted clipboard history and sync platform for desktop, mobile, browsers, and the command line.',
+  image = '/logo.jpg',
+  noindex = false,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, 'https://cliptown.github.io');
-const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim() ?? '';
-const usesHomepageChrome = Astro.url.pathname === '/';
+
+// DEN-58: no fallback funding URL. An external support destination appears
+// only when PUBLIC_PATREON_URL is explicitly configured after ownership verification.
+const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
+
+const site = Astro.site ?? new URL('https://cliptown.github.io');
+const canonical = new URL(Astro.url.pathname, site);
+const socialImage = new URL(image, site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'ClipTown',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'macOS, Windows, Linux, iOS, Android, Web',
+  description,
+  url: site.toString(),
+  codeRepository: 'https://github.com/cliptown',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/PreOrder',
+  },
+};
 ---
 
 <!doctype html>
@@ -22,110 +45,87 @@ const usesHomepageChrome = Astro.url.pathname === '/';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#071229" />
-    <meta name="color-scheme" content="dark" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#070a12" />
+    <meta name="color-scheme" content="dark" />
     <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
-    <link rel="mask-icon" href="/favicon.svg" color="#ff3158" />
     <link rel="manifest" href="/site.webmanifest" />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ClipTown" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="https://cliptown.github.io/social-card.svg" />
+    <meta property="og:image" content={socialImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://cliptown.github.io/social-card.svg" />
+    <meta name="twitter:image" content={socialImage} />
+
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
-  <body data-support-url={supportUrl}>
+  <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    {!usesHomepageChrome && <SiteHeader />}
-    {usesHomepageChrome ? <slot /> : <div id="main-content"><slot /></div>}
-    {!usesHomepageChrome && <SiteFooter />}
 
-    <script is:inline>
-      (() => {
-        const supportUrl = document.body.dataset.supportUrl;
-        if (!supportUrl) return;
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="ClipTown home">
+          <img src="/brand-mark.svg" alt="" width="38" height="38" />
+          <span>ClipTown</span>
+          <small>clipboard infrastructure</small>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="/#features">Features</a>
+          <a href="/#platforms">Platforms</a>
+          <a href="/security">Security</a>
+          <a href="/support">Support</a>
+          <a class="button compact secondary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </nav>
+      </div>
+    </header>
 
-        const github = document.querySelector('.site-header .github-link');
-        if (github && !document.querySelector('.site-header .verified-support-link')) {
-          const actions = document.createElement('div');
-          actions.className = 'header-actions';
-          github.parentElement?.insertBefore(actions, github);
-          actions.appendChild(github);
-          const support = document.createElement('a');
-          support.className = 'verified-support-link';
-          support.href = supportUrl;
-          support.target = '_blank';
-          support.rel = 'noreferrer';
-          support.innerHTML = 'Support <span aria-hidden="true">↗</span>';
-          actions.appendChild(support);
-        }
+    <main id="main-content" class="site-main">
+      <slot />
+    </main>
 
-        const footerLinks = document.querySelector('.footer-links');
-        if (footerLinks && !footerLinks.querySelector('.footer-verified-support')) {
-          const support = document.createElement('a');
-          support.className = 'footer-verified-support';
-          support.href = supportUrl;
-          support.target = '_blank';
-          support.rel = 'noreferrer';
-          support.textContent = 'Support';
-          footerLinks.appendChild(support);
-        }
-      })();
-    </script>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href="/">
+              <img src="/brand-mark.svg" alt="" width="38" height="38" />
+              <span>ClipTown</span>
+            </a>
+            <p class="prose">Open-source clipboard history, search, encrypted sync, and peer-to-peer continuity. The project is under active development.</p>
+          </div>
+          <div class="footer-links">
+            <strong>Product</strong>
+            <a href="/#features">Features</a>
+            <a href="/#platforms">Platforms</a>
+            <a href="/security">Security model</a>
+            <a href="/support">Support the project</a>
+          </div>
+          <div class="footer-links">
+            <strong>Community</strong>
+            <a href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
+            <a href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noreferrer">Monorepo ↗</a>
+            {supportUrl ? (
+              <a href={supportUrl} target="_blank" rel="noreferrer">Verified support destination ↗</a>
+            ) : (
+              <a href="/support">Support destination pending verification</a>
+            )}
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© {new Date().getFullYear()} ClipTown contributors.</span>
+          <span>No production downloads are advertised until signed releases exist.</span>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
-
-<style is:global>
-  .header-actions {
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .header-actions .github-link,
-  .header-actions .verified-support-link {
-    justify-self: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.55rem 0.8rem;
-    border: 1px solid rgba(110, 151, 243, 0.2);
-    border-radius: 0.62rem;
-    color: #90a5d0;
-    background: rgba(47, 107, 255, 0.07);
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
-  }
-
-  .header-actions .verified-support-link {
-    border-color: rgba(255, 92, 120, 0.26);
-    color: #ff9caf;
-    background: rgba(255, 49, 88, 0.08);
-  }
-
-  .header-actions a:hover {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.28);
-  }
-
-  @media (max-width: 720px) {
-    .header-actions .github-link,
-    .header-actions .verified-support-link {
-      font-size: 0;
-      min-width: 2.35rem;
-      padding-inline: 0.65rem;
-    }
-    .header-actions a span { font-size: 0.9rem; }
-  }
-</style>

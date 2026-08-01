@@ -1,26 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PlatformPlan from '../components/PlatformPlan.astro';
+import PlatformPage from '../components/PlatformPage.astro';
 ---
 
-<Layout title="ClipTown for macOS" description="ClipTown for macOS is a menu-bar clipboard workspace with search, favorites, rich content, local encryption, and encrypted device sync.">
-  <PlatformPlan
-    name="macOS"
-    icon="⌘"
-    summary="A menu-bar clipboard workspace for text, images, files, and links, with keyboard-first search and explicit capture controls."
-    capabilities={[
-      'Menu-bar popover with a configurable global shortcut and full keyboard navigation.',
-      'Searchable local history with pinned favorites and rich previews.',
-      'Text, image, file, URL, color, HTML, and RTF clipboard formats.',
-      'Client-side encryption before Rust-backend or peer synchronization.',
-      'Recent-file import through user-selected macOS file pickers.',
-    ]}
-    boundaries={[
-      'Clipboard monitoring requires explicit enablement and clear privacy controls.',
-      'Secure and password fields must never be captured intentionally.',
-      'Biometric approval uses LocalAuthentication; biometric templates never leave the device.',
-      'Signed and notarized universal binaries are required before downloads are published.',
-    ]}
-    repository="https://github.com/cliptown/cliptown-flutter"
-  />
-</Layout>
+<PlatformPage
+  name="macOS"
+  icon="⌘"
+  description="ClipTown for macOS is a Flutter desktop client with menu-bar access, searchable clipboard history, pins, local encryption, and encrypted sync."
+  summary="A menu-bar clipboard workspace for text, images, files, and links, with keyboard-first search and explicit capture controls."
+  capabilities={[
+    'Menu-bar popover with a configurable global shortcut and full keyboard navigation.',
+    'Searchable local history with pinned favorites and rich previews.',
+    'Text, image, file, URL, color, HTML, and RTF clipboard types.',
+    'Client-side encryption before Rust-backend or peer synchronization.',
+    'Recent-file import through user-selected macOS file pickers.',
+  ]}
+  boundaries={[
+    'Clipboard monitoring requires explicit user enablement and accessibility/privacy disclosures.',
+    'Secure and password fields must never be captured intentionally.',
+    'Biometric approval uses LocalAuthentication; biometric templates never leave the device.',
+    'Signed and notarized universal binaries are required before downloads are published.',
+  ]}
+  technical={[
+    'Flutter desktop shell with a dedicated macOS platform adapter.',
+    'Menu-bar and global-hotkey integration tested on Apple Silicon and Intel runners.',
+    'Keychain-backed device keys and wrapped ClipTown account-key material.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>

@@ -1,26 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PlatformPlan from '../components/PlatformPlan.astro';
+import PlatformPage from '../components/PlatformPage.astro';
 ---
 
-<Layout title="ClipTown for Windows" description="ClipTown for Windows is a system-tray clipboard workspace with search, favorites, local encryption, and encrypted device sync.">
-  <PlatformPlan
-    name="Windows"
-    icon="⊞"
-    summary="A native-feeling system-tray clipboard workspace with fast search, favorites, rich previews, and trusted-device synchronization."
-    capabilities={[
-      'System-tray popover and configurable global keyboard shortcut.',
-      'Searchable history for text, images, files, links, and rich text.',
-      'Pinned favorites and retention rules for long-lived clips.',
-      'Client-side encryption before cloud or peer synchronization.',
-      'Windows recent-file import through explicit user selection.',
-    ]}
-    boundaries={[
-      'Clipboard observation is opt-in and can be paused instantly.',
-      'Password-manager, secure-input, and excluded applications are never intentionally captured.',
-      'Windows Hello performs local step-up approval without exporting biometric data.',
-      'Signed MSIX or installer artifacts must pass release CI before publication.',
-    ]}
-    repository="https://github.com/cliptown/cliptown-flutter"
-  />
-</Layout>
+<PlatformPage
+  name="Windows"
+  icon="⊞"
+  description="ClipTown for Windows is a Flutter desktop client with system-tray access, searchable clipboard history, pins, local encryption, and encrypted sync."
+  summary="A native-feeling system-tray clipboard workspace with fast search, favorites, rich content previews, and trusted-device synchronization."
+  capabilities={[
+    'System-tray popover and configurable global keyboard shortcut.',
+    'Searchable history for text, images, files, links, and rich text.',
+    'Pinned favorites and retention rules for long-lived clips.',
+    'Client-side encryption before cloud or peer synchronization.',
+    'Windows recent-file import through explicit user selection.',
+  ]}
+  boundaries={[
+    'Clipboard observation is opt-in and can be paused instantly.',
+    'Password-manager, secure-input, and excluded applications are never intentionally captured.',
+    'Windows Hello performs local step-up approval without exporting biometric data.',
+    'Signed MSIX or installer artifacts must pass release CI before publication.',
+  ]}
+  technical={[
+    'Flutter desktop shell with Win32 clipboard and tray adapters.',
+    'Windows x64 and ARM64 build/test matrix.',
+    'Credential Manager-backed device keys and wrapped account keys.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>

@@ -1,26 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PlatformPlan from '../components/PlatformPlan.astro';
+import PlatformPage from '../components/PlatformPage.astro';
 ---
 
-<Layout title="ClipTown for Android" description="ClipTown for Android provides share-target capture, quick actions, keyboard access, local search, and encrypted synchronization within Android clipboard restrictions.">
-  <PlatformPlan
-    name="Android"
-    icon="△"
-    summary="A mobile clipboard library built around explicit share actions, quick settings, keyboard integration, and Android's evolving privacy rules."
-    capabilities={[
-      'Save text, links, images, and files through Android share targets.',
-      'Import the active clipboard after an intentional user action.',
-      'Access pinned clips from a custom keyboard or quick action.',
-      'Search and decrypt synchronized history locally.',
-      'Use device biometrics for local step-up approval where supported.',
-    ]}
-    boundaries={[
-      'Modern Android restricts background clipboard access, especially when the app is not focused.',
-      'Accessibility services are not used as a blanket clipboard-monitoring workaround.',
-      'Sensitive clipboard overlays and secure fields remain excluded.',
-      'Play Store data-safety declarations and signed releases are required before publication.',
-    ]}
-    repository="https://github.com/cliptown/cliptown-flutter"
-  />
-</Layout>
+<PlatformPage
+  name="Android"
+  icon="△"
+  description="ClipTown for Android provides share-target capture, quick actions, keyboard access, local search, and encrypted synchronization within Android clipboard restrictions."
+  summary="A mobile clipboard library built around explicit share actions, quick settings, keyboard integration, and Android's evolving privacy rules."
+  capabilities={[
+    'Save text, links, images, and files through Android share targets.',
+    'Import the active clipboard after an intentional user action.',
+    'Access pinned clips from a custom keyboard or quick action.',
+    'Search and decrypt synchronized history locally.',
+    'Use device biometrics for local step-up approval where supported.',
+  ]}
+  boundaries={[
+    'Modern Android restricts background clipboard access, especially when the app is not focused.',
+    'Accessibility services are not used as a blanket clipboard-monitoring workaround.',
+    'Sensitive clipboard overlays and secure fields must remain excluded.',
+    'Play Store data-safety declarations and signed release artifacts are required before publication.',
+  ]}
+  technical={[
+    'Flutter application with Android Share, IME, and quick-action adapters.',
+    'Android Keystore-backed device keys and wrapped account-key material.',
+    'API-level emulator matrix plus physical-device privacy validation.',
+  ]}
+  repository="https://github.com/cliptown/cliptown-flutter"
+/>

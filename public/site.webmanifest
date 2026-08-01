@@ -1,14 +1,14 @@
 {
   "name": "ClipTown",
   "short_name": "ClipTown",
-  "description": "A searchable, encrypted memory for everything you copy.",
+  "description": "Searchable, encrypted clipboard history everywhere.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030914",
-  "theme_color": "#071229",
+  "background_color": "#070a12",
+  "theme_color": "#070a12",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/brand-mark.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
