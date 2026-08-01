@@ -4,10 +4,13 @@ import {
   CONFIGURED_PORT,
   FAIL_CLOSED_OUT_DIR,
   FAIL_CLOSED_PORT,
+  HOSTILE_OUT_DIR,
+  HOSTILE_PORT,
 } from './tests/e2e-constants.mjs';
 
 const failClosedBaseURL = `http://127.0.0.1:${FAIL_CLOSED_PORT}`;
 const configuredBaseURL = `http://127.0.0.1:${CONFIGURED_PORT}`;
+const hostileBaseURL = `http://127.0.0.1:${HOSTILE_PORT}`;
 
 /**
  * Two static builds are served in parallel (see scripts/build-e2e.mjs), one per
