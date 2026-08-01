@@ -9,6 +9,7 @@
  */
 import { spawnSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import {
   CONFIGURED_OUT_DIR,
   CONFIGURED_SUPPORT_URL,
