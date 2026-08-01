@@ -92,7 +92,7 @@ const csp = [
     <meta name="twitter:image" content={socialImage} />
 
     <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script is:inline type="application/ld+json" set:html={structuredDataJson} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
