@@ -28,7 +28,7 @@ import { supportUrl } from '../lib/support';
         </div>
       </article>
 
-      <article class="card">
+      <article class="card" data-support-state={supportUrl ? 'verified' : 'pending'}>
         <div class="feature-icon" aria-hidden="true">♥</div>
         <h3>Direct support</h3>
         {supportUrl ? (
