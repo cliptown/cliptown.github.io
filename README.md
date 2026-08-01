@@ -40,6 +40,14 @@ Pull requests run `.github/workflows/ci.yml`. Pushes to `main` validate, build, 
 - `public/site.webmanifest` — installable-site metadata.
 - `public/logo.jpg` — retained as the current raster social-preview image until a dedicated Open Graph card is exported.
 
-## Support links
+## Support links (DEN-58: fail closed)
 
-The live GitHub organization is the primary community link. `patreon.com/cliptown` is included as the intended Patreon URL but must be verified before a public funding announcement.
+The live GitHub organization is the primary community link. The site publishes **no** direct-funding destination by default and ships no fallback funding URL of any kind.
+
+A funding link appears only when the `PUBLIC_PATREON_URL` environment variable is set at build time, after the destination's ownership has been verified, and only when the value parses as an absolute `https://` URL. Anything else — unset, blank, malformed, or a `javascript:`/`data:` value — renders the disabled "Support destination pending verification" state instead (`src/lib/support.ts`).
+
+```bash
+PUBLIC_PATREON_URL="https://www.example.com/verified-destination" npm run build
+```
+
+This is enforced in three places, so removing any one of them still fails the build: `check:site` (sources), `check:dist` (published artifact), the Playwright suite (rendered pages), and the artifact gate in `.github/workflows/deploy.yml`.
