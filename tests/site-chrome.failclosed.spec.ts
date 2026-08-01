@@ -143,7 +143,10 @@ test.describe('site-wide chrome behaviour', () => {
   });
 
   test('the 404 page renders the chrome and is marked noindex', async ({ page }) => {
-    const problems = watchForProblems(page);
+    // The 404 status is the point of the test, so only that URL may error.
+    const problems = watchForProblems(page, {
+      expectedErrorUrls: /this-route-does-not-exist/,
+    });
 
     const response = await page.goto('/this-route-does-not-exist');
     expect(response?.status()).toBe(404);
