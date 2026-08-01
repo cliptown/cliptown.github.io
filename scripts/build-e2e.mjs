@@ -18,13 +18,16 @@ import {
   HOSTILE_SUPPORT_URL,
 } from '../tests/e2e-constants.mjs';
 
+const require = createRequire(import.meta.url);
+const astroBin = require.resolve('astro/astro.js', { paths: [process.cwd()] });
+
 function build({ outDir, supportUrl, label }) {
   console.log(`\n[build:e2e] ${label} -> ${outDir}`);
   rmSync(outDir, { recursive: true, force: true });
 
   const result = spawnSync(
     process.execPath,
-    ['node_modules/astro/astro.js', 'build', '--outDir', outDir],
+    [astroBin, 'build', '--outDir', outDir],
     {
       stdio: 'inherit',
       // An explicit empty string beats simply unsetting the variable: it also
