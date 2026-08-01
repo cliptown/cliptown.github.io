@@ -35,8 +35,8 @@ test.describe('a dangerous PUBLIC_PATREON_URL is rejected, not rendered', () => 
         .evaluateAll((anchors) =>
           anchors.map((a) => new URL((a as HTMLAnchorElement).href).protocol),
         );
-      expect(schemes.length).toBeGreaterThan(0);
-      expect([...new Set(schemes)].sort()).toEqual(['http:', 'https:'].filter((s) => schemes.includes(s)));
+      expect(schemes.length).toBeGreaterThan(5);
+      expect(schemes.filter((scheme) => scheme !== 'http:' && scheme !== 'https:')).toEqual([]);
     });
   }
 
