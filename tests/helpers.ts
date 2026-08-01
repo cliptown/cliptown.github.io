@@ -39,11 +39,12 @@ export function watchForProblems(page: Page, options: WatchOptions = {}): PagePr
     problems.pageErrors.push(error.message);
   });
   page.on('requestfailed', (request) => {
+    if (isExpected(request.url())) return;
     problems.failedRequests.push(`${request.url()} — ${request.failure()?.errorText ?? 'failed'}`);
   });
   page.on('response', (response: Response) => {
     // Only same-origin subresources are in scope; the site loads nothing else.
-    if (response.status() >= 400) {
+    if (response.status() >= 400 && !isExpected(response.url())) {
       problems.failedRequests.push(`${response.status()} ${response.url()}`);
     }
   });
