@@ -16,13 +16,24 @@ export interface PageProblems {
  * CSP violations surface as console errors, so this also guards the policy the
  * layout ships.
  */
-export function watchForProblems(page: Page): PageProblems {
+export interface WatchOptions {
+  /**
+   * URLs that are *expected* to return an error status — currently only the
+   * deliberate 404-page navigation. Everything else is a defect.
+   */
+  expectedErrorUrls?: RegExp;
+}
+
+export function watchForProblems(page: Page, options: WatchOptions = {}): PageProblems {
   const problems: PageProblems = { consoleErrors: [], pageErrors: [], failedRequests: [] };
+  const isExpected = (url: string) => options.expectedErrorUrls?.test(url) ?? false;
 
   page.on('console', (message) => {
-    if (message.type() === 'error') {
-      problems.consoleErrors.push(`${message.text()} (${message.location().url})`);
-    }
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    // Chromium logs a console error for the document's own 404 response.
+    if (isExpected(message.location().url) || isExpected(text)) return;
+    problems.consoleErrors.push(`${text} (${message.location().url})`);
   });
   page.on('pageerror', (error) => {
     problems.pageErrors.push(error.message);
