@@ -39,6 +39,28 @@ const structuredData = {
     availability: 'https://schema.org/PreOrder',
   },
 };
+
+// `set:html` writes raw bytes into the document, so a `<` reaching the JSON-LD
+// data block could close the <script> element early and turn page copy into an
+// injection sink. Escaping `<` keeps the JSON valid and inert.
+const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
+
+// The site is fully self-hosted: no third-party scripts, styles, fonts, or
+// beacons. GitHub Pages cannot set response headers, so the policy ships as a
+// meta element. `frame-ancestors`/`report-uri` are intentionally omitted
+// because they are ignored (and warned about) when delivered via <meta>.
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "form-action 'none'",
+  "img-src 'self' data:",
+  // Astro emits scoped component styles inline, and a few elements carry style attributes.
+  "style-src 'self' 'unsafe-inline'",
+  "script-src 'none'",
+  "connect-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ');
 ---
 
 <!doctype html>
