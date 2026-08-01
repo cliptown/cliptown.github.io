@@ -15,10 +15,7 @@ test.describe('support page fails closed without PUBLIC_PATREON_URL', () => {
     await expect(directSupport).toHaveCount(1);
     await expect(directSupport).toHaveAttribute('data-support-state', 'pending');
 
-    const pendingControl = page.getByText('Support destination pending verification', { exact: true });
-    await expect(pendingControl).toBeVisible();
-
-    // The control inside the Direct support card must not be a link at all.
+    // The control inside the Direct support card must be inert — not a link.
     const controlInCard = directSupport.getByText('Support destination pending verification', {
       exact: true,
     });
