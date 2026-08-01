@@ -13,6 +13,8 @@ import {
   CONFIGURED_OUT_DIR,
   CONFIGURED_SUPPORT_URL,
   FAIL_CLOSED_OUT_DIR,
+  HOSTILE_OUT_DIR,
+  HOSTILE_SUPPORT_URL,
 } from '../tests/e2e-constants.mjs';
 
 function build({ outDir, supportUrl, label }) {
