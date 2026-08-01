@@ -54,6 +54,33 @@ for (const file of sourceFiles) {
     if (path.includes('.') || path.startsWith('/#')) continue;
     if (!pages.has(path)) errors.push(`${rel}: unresolved internal route ${path}`);
   }
+  // Every new-tab link must sever the opener relationship. `rel="noreferrer"`
+  // implies `noopener` in current browsers, but stating both keeps the
+  // guarantee explicit and survives older engines.
+  for (const match of text.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/g)) {
+    const tag = match[0];
+    const rel = /rel=["']([^"']*)["']/.exec(tag)?.[1] ?? '';
+    const tokens = rel.split(/\s+/);
+    if (!tokens.includes('noopener') || !tokens.includes('noreferrer')) {
+      errors.push(`${relPath(file)}: target="_blank" link missing rel="noopener noreferrer"`);
+    }
+  }
+}
+
+function relPath(file) {
+  return relative(root, file);
+}
+
+// The sitemap is a hand-maintained list; drift silently de-indexes real pages
+// or advertises routes that do not exist.
+const sitemapSource = readFileSync(join(root, 'src/pages/sitemap.xml.ts'), 'utf8');
+const sitemapRoutes = new Set([...sitemapSource.matchAll(/^\s*'(\/[^']*)',/gm)].map((m) => m[1]));
+const indexablePages = new Set([...pages].filter((page) => page !== '/404'));
+for (const page of indexablePages) {
+  if (!sitemapRoutes.has(page)) errors.push(`src/pages/sitemap.xml.ts: missing route ${page}`);
+}
+for (const route of sitemapRoutes) {
+  if (!indexablePages.has(route)) errors.push(`src/pages/sitemap.xml.ts: route ${route} has no page`);
 }
 
 const favicon = readFileSync(join(root, 'public/favicon.svg'), 'utf8');
