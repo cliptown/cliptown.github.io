@@ -109,7 +109,7 @@ const csp = [
           <a href="/#platforms">Platforms</a>
           <a href="/security">Security</a>
           <a href="/support">Support</a>
-          <a class="button compact secondary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a class="button compact secondary" href="https://github.com/cliptown" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
         </nav>
       </div>
     </header>
@@ -137,10 +137,10 @@ const csp = [
           </div>
           <div class="footer-links">
             <strong>Community</strong>
-            <a href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
-            <a href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noreferrer">Monorepo ↗</a>
+            <a href="https://github.com/cliptown" target="_blank" rel="noopener noreferrer">GitHub organization ↗</a>
+            <a href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noopener noreferrer">Monorepo ↗</a>
             {supportUrl ? (
-              <a href={supportUrl} target="_blank" rel="noreferrer">Verified support destination ↗</a>
+              <a href={supportUrl} target="_blank" rel="noopener noreferrer">Verified support destination ↗</a>
             ) : (
               <a href="/support">Support destination pending verification</a>
             )}
