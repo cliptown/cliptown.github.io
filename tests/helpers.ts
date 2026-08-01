@@ -65,28 +65,45 @@ export function expectNoProblems(problems: PageProblems): void {
 export async function expectNoHorizontalOverflow(page: Page, label: string): Promise<void> {
   const overflow = await page.evaluate(() => {
     const doc = document.documentElement;
-    const offenders: string[] = [];
     const limit = doc.clientWidth;
-    for (const element of Array.from(document.body.querySelectorAll<HTMLElement>('*'))) {
+
+    // `.site-main` sets `overflow: clip`, so decorative art inside it is
+    // intentionally cropped. The header and footer are not clipped, and
+    // anything sticking out there is a genuine layout bug.
+    const chromeOffenders: string[] = [];
+    for (const element of Array.from(
+      document.querySelectorAll<HTMLElement>('header *, footer *'),
+    )) {
       const rect = element.getBoundingClientRect();
       if (rect.width === 0 && rect.height === 0) continue;
-      if (rect.right > limit + 1) {
-        offenders.push(
-          `${element.tagName.toLowerCase()}.${element.className || '(no class)'} right=${Math.round(rect.right)}`,
+      if (rect.right > limit + 1 || rect.left < -1) {
+        chromeOffenders.push(
+          `${element.tagName.toLowerCase()}.${element.className || '(no class)'} left=${Math.round(rect.left)} right=${Math.round(rect.right)}`,
         );
       }
     }
+
     return {
       scrollWidth: doc.scrollWidth,
-      clientWidth: doc.clientWidth,
-      offenders: offenders.slice(0, 5),
+      bodyScrollWidth: document.body.scrollWidth,
+      clientWidth: limit,
+      chromeOffenders: chromeOffenders.slice(0, 5),
     };
   });
 
   expect(
     overflow.scrollWidth,
-    `${label}: document scrolls horizontally (${overflow.scrollWidth}px in a ${overflow.clientWidth}px viewport); first offenders: ${overflow.offenders.join(', ')}`,
+    `${label}: document scrolls horizontally (${overflow.scrollWidth}px in a ${overflow.clientWidth}px viewport)`,
   ).toBeLessThanOrEqual(overflow.clientWidth + 1);
+
+  expect(
+    overflow.bodyScrollWidth,
+    `${label}: body scrolls horizontally (${overflow.bodyScrollWidth}px in a ${overflow.clientWidth}px viewport)`,
+  ).toBeLessThanOrEqual(overflow.clientWidth + 1);
+
+  expect(overflow.chromeOffenders, `${label}: header/footer content overflows the viewport`).toEqual(
+    [],
+  );
 }
 
 /** Every same-origin href on the page, normalised to a pathname (+hash). */
