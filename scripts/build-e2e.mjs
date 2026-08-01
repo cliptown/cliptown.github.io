@@ -49,5 +49,10 @@ build({
   supportUrl: CONFIGURED_SUPPORT_URL,
   label: `configured build (PUBLIC_PATREON_URL=${CONFIGURED_SUPPORT_URL})`,
 });
+build({
+  outDir: HOSTILE_OUT_DIR,
+  supportUrl: HOSTILE_SUPPORT_URL,
+  label: 'hostile build (PUBLIC_PATREON_URL set to a javascript: URL)',
+});
 
 console.log('\n[build:e2e] both builds complete');
