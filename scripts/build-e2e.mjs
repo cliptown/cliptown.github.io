@@ -18,8 +18,12 @@ import {
   HOSTILE_SUPPORT_URL,
 } from '../tests/e2e-constants.mjs';
 
+// Resolve Astro's real CLI entrypoint from its manifest rather than guessing a
+// path, so the script keeps working if the package layout changes.
 const require = createRequire(import.meta.url);
-const astroBin = require.resolve('astro/astro.js', { paths: [process.cwd()] });
+const astroManifestPath = require.resolve('astro/package.json', { paths: [process.cwd()] });
+const astroManifest = require(astroManifestPath);
+const astroBin = resolve(dirname(astroManifestPath), astroManifest.bin.astro);
 
 function build({ outDir, supportUrl, label }) {
   console.log(`\n[build:e2e] ${label} -> ${outDir}`);
