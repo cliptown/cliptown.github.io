@@ -46,6 +46,11 @@ export default defineConfig({
       testMatch: /.*\.configured\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: configuredBaseURL },
     },
+    {
+      name: 'hostile-env',
+      testMatch: /.*\.hostile\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], baseURL: hostileBaseURL },
+    },
   ],
   webServer: [
     {
