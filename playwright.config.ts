@@ -67,5 +67,12 @@ export default defineConfig({
       stdout: 'pipe',
       timeout: 30_000,
     },
+    {
+      command: `node tests/static-server.mjs ${HOSTILE_OUT_DIR} ${HOSTILE_PORT}`,
+      url: hostileBaseURL,
+      reuseExistingServer: !process.env.CI,
+      stdout: 'pipe',
+      timeout: 30_000,
+    },
   ],
 });
