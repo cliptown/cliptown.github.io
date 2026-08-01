@@ -97,8 +97,71 @@ if (!supportPage.includes('The site has no fallback funding URL.')) {
   errors.push('src/pages/support.astro: missing no-fallback support disclosure');
 }
 
+// ---------------------------------------------------------------------------
+// Built-output pass.
+//
+// The checks above only read `src/`, so nothing previously verified the
+// artifact that actually gets published. A funding URL could reach `dist/`
+// through `public/`, a stylesheet, the webmanifest, or a dependency and every
+// source-level check would still pass. Anything shipped to GitHub Pages is
+// verified here.
+// ---------------------------------------------------------------------------
+const requireDist = process.argv.includes('--require-dist');
+const distDir = join(root, 'dist');
+let distFileCount = 0;
+
+if (!existsSync(distDir)) {
+  if (requireDist) errors.push('dist/ is missing: run `npm run build` before checking built output');
+} else {
+  const textExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.xml', '.txt', '.svg', '.webmanifest', '.map']);
+  const distFiles = walk(distDir).filter((file) => textExtensions.has(extname(file)));
+  distFileCount = distFiles.length;
+
+  // DEN-58: a configured PUBLIC_PATREON_URL is the ONLY way a funding link may
+  // reach built output. Unset means the artifact must contain no funding link
+  // at all, and the unverified fallback must never appear either way.
+  const configuredSupportUrl = process.env.PUBLIC_PATREON_URL?.trim();
+
+  for (const file of distFiles) {
+    const rel = relative(root, file);
+    const text = readFileSync(file, 'utf8');
+
+    if (/patreon\.com\/cliptown/i.test(text)) {
+      errors.push(`${rel}: built output contains the unverified Patreon fallback URL`);
+    }
+    if (!configuredSupportUrl && /https?:\/\/(www\.)?(patreon\.com|ko-fi\.com|buymeacoffee\.com|opencollective\.com|paypal\.(me|com))/i.test(text)) {
+      errors.push(`${rel}: built output publishes a funding link but PUBLIC_PATREON_URL is not set`);
+    }
+    if (/href=["']#["']/.test(text)) errors.push(`${rel}: built output has placeholder href="#"`);
+    if (/Astro Starter Kit|Astro Basics/.test(text)) errors.push(`${rel}: built output has starter copy`);
+    if (/Download for Apple Silicon|Download for Windows \(x64\)|Get it on Google Play|Download on the App Store/.test(text)) {
+      errors.push(`${rel}: built output has unverified production download copy`);
+    }
+    if (/javascript:/i.test(text)) errors.push(`${rel}: built output contains a javascript: URL`);
+  }
+
+  // The rendered fail-closed state, asserted on the published HTML itself.
+  const supportHtmlPath = join(distDir, 'support/index.html');
+  if (!existsSync(supportHtmlPath)) {
+    errors.push('dist/support/index.html was not generated');
+  } else {
+    const supportHtml = readFileSync(supportHtmlPath, 'utf8');
+    if (!supportHtml.includes('The site has no fallback funding URL.')) {
+      errors.push('dist/support/index.html: missing no-fallback support disclosure');
+    }
+    if (configuredSupportUrl) {
+      if (!supportHtml.includes(configuredSupportUrl)) {
+        errors.push('dist/support/index.html: PUBLIC_PATREON_URL is set but the verified destination was not rendered');
+      }
+    } else if (!supportHtml.includes('Support destination pending verification')) {
+      errors.push('dist/support/index.html: missing fail-closed support status');
+    }
+  }
+}
+
 if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`site checks passed (${sourceFiles.length} source files, ${pages.size} routes)`);
+const distSummary = distFileCount ? `, ${distFileCount} built files` : '';
+console.log(`site checks passed (${sourceFiles.length} source files, ${pages.size} routes${distSummary})`);
