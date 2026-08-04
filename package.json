@@ -12,9 +12,15 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:site": "node scripts/check-site.mjs",
-    "test": "npm run check:site && npm run build"
+    "check:dist": "node scripts/check-site.mjs --require-dist",
+    "build:e2e": "node scripts/build-e2e.mjs",
+    "test:e2e": "npm run build:e2e && playwright test",
+    "test": "npm run check:site && npm run build && npm run check:dist"
   },
   "dependencies": {
     "astro": "^7.1.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }

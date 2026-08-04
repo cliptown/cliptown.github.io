@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { supportUrl } from '../lib/support';
 
 // DEN-58: fail closed. No external funding link is published unless
-// PUBLIC_PATREON_URL is explicitly configured after ownership verification.
-const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
+// PUBLIC_PATREON_URL is explicitly configured, after ownership verification,
+// and parses as an absolute http(s) URL. See src/lib/support.ts.
 ---
 
 <Layout
@@ -23,18 +24,18 @@ const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
         <h3>Contribute on GitHub</h3>
         <p>Review architecture, open focused issues, improve tests, validate platform constraints, or help implement a repository roadmap.</p>
         <div class="button-row" style="margin-top: 1.3rem">
-          <a class="button secondary compact" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
+          <a class="button secondary compact" href="https://github.com/cliptown" target="_blank" rel="noopener noreferrer">GitHub organization ↗</a>
         </div>
       </article>
 
-      <article class="card">
+      <article class="card" data-support-state={supportUrl ? 'verified' : 'pending'}>
         <div class="feature-icon" aria-hidden="true">♥</div>
         <h3>Direct support</h3>
         {supportUrl ? (
           <>
             <p>Help cover test devices, code signing, store fees, design work, and infrastructure through the verified ClipTown support destination.</p>
             <div class="button-row" style="margin-top: 1.3rem">
-              <a class="button secondary compact" href={supportUrl} target="_blank" rel="noreferrer">Open verified support page ↗</a>
+              <a class="button secondary compact" href={supportUrl} target="_blank" rel="noopener noreferrer">Open verified support page ↗</a>
             </div>
           </>
         ) : (
@@ -52,7 +53,7 @@ const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
         <h3>GitHub Sponsors</h3>
         <p>Use GitHub's sponsorship surface when it is available for the organization owner and linked ClipTown work.</p>
         <div class="button-row" style="margin-top: 1.3rem">
-          <a class="button secondary compact" href="https://github.com/sponsors/ORESoftware" target="_blank" rel="noreferrer">GitHub Sponsors ↗</a>
+          <a class="button secondary compact" href="https://github.com/sponsors/ORESoftware" target="_blank" rel="noopener noreferrer">GitHub Sponsors ↗</a>
         </div>
       </article>
     </div>

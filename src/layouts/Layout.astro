@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { supportUrl } from '../lib/support';
 
 export interface Props {
   title: string;
@@ -15,9 +16,9 @@ const {
   noindex = false,
 } = Astro.props;
 
-// DEN-58: no fallback funding URL. An external support destination appears
-// only when PUBLIC_PATREON_URL is explicitly configured after ownership verification.
-const supportUrl = import.meta.env.PUBLIC_PATREON_URL?.trim();
+// DEN-58: no fallback funding URL. An external support destination appears only
+// when PUBLIC_PATREON_URL is explicitly configured, after ownership verification,
+// and only when it parses as an absolute http(s) URL. See src/lib/support.ts.
 
 const site = Astro.site ?? new URL('https://cliptown.github.io');
 const canonical = new URL(Astro.url.pathname, site);
@@ -38,12 +39,36 @@ const structuredData = {
     availability: 'https://schema.org/PreOrder',
   },
 };
+
+// `set:html` writes raw bytes into the document, so a `<` reaching the JSON-LD
+// data block could close the <script> element early and turn page copy into an
+// injection sink. Escaping `<` keeps the JSON valid and inert.
+const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
+
+// The site is fully self-hosted: no third-party scripts, styles, fonts, or
+// beacons. GitHub Pages cannot set response headers, so the policy ships as a
+// meta element. `frame-ancestors`/`report-uri` are intentionally omitted
+// because they are ignored (and warned about) when delivered via <meta>.
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "form-action 'none'",
+  "img-src 'self' data:",
+  // Astro emits scoped component styles inline, and a few elements carry style attributes.
+  "style-src 'self' 'unsafe-inline'",
+  "script-src 'none'",
+  "connect-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ');
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#070a12" />
@@ -67,7 +92,7 @@ const structuredData = {
     <meta name="twitter:image" content={socialImage} />
 
     <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script is:inline type="application/ld+json" set:html={structuredDataJson} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -84,7 +109,7 @@ const structuredData = {
           <a href="/#platforms">Platforms</a>
           <a href="/security">Security</a>
           <a href="/support">Support</a>
-          <a class="button compact secondary" href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a class="button compact secondary" href="https://github.com/cliptown" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
         </nav>
       </div>
     </header>
@@ -112,10 +137,10 @@ const structuredData = {
           </div>
           <div class="footer-links">
             <strong>Community</strong>
-            <a href="https://github.com/cliptown" target="_blank" rel="noreferrer">GitHub organization ↗</a>
-            <a href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noreferrer">Monorepo ↗</a>
+            <a href="https://github.com/cliptown" target="_blank" rel="noopener noreferrer">GitHub organization ↗</a>
+            <a href="https://github.com/cliptown/cliptown-monorepo" target="_blank" rel="noopener noreferrer">Monorepo ↗</a>
             {supportUrl ? (
-              <a href={supportUrl} target="_blank" rel="noreferrer">Verified support destination ↗</a>
+              <a href={supportUrl} target="_blank" rel="noopener noreferrer">Verified support destination ↗</a>
             ) : (
               <a href="/support">Support destination pending verification</a>
             )}
