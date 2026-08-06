@@ -30,3 +30,7 @@ blob-report/
 playwright/.cache/
 dist-e2e-configured/
 dist-e2e-hostile/
+tmp
+temp
+tmp/worktrees
+temp/worktrees
