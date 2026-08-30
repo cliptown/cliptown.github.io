@@ -39,6 +39,10 @@ for (const route of ROUTES) {
       await expect(footer).toBeVisible();
       await expect(footer.getByText(/ClipTown contributors/)).toBeVisible();
       await expect(footer.getByRole('link', { name: 'Security model' })).toBeVisible();
+      await expect(footer.getByRole('link', { name: 'Chat with ClipTown' })).toHaveAttribute(
+        'href',
+        'https://ores-chat.github.io/chat/?context=cliptown',
+      );
     });
 
     test('exposes a main landmark, a single h1, and a working skip link', async ({ page }) => {
@@ -98,7 +102,7 @@ for (const route of ROUTES) {
       expect(csp).toContain("default-src 'self'");
       expect(csp).toContain("object-src 'none'");
       expect(csp).toContain("base-uri 'self'");
-      expect(csp).toContain("script-src 'none'");
+      expect(csp).toContain("script-src 'self' https://ores-chat.github.io");
     });
 
     test('does not scroll horizontally on mobile or desktop', async ({ page }) => {
