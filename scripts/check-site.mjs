@@ -97,6 +97,21 @@ if (!supportPage.includes('The site has no fallback funding URL.')) {
   errors.push('src/pages/support.astro: missing no-fallback support disclosure');
 }
 
+const layout = readFileSync(join(root, 'src/layouts/Layout.astro'), 'utf8');
+const footer = layout.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
+if (!footer.includes('<ores-chat-footer-link context-id="cliptown">')) {
+  errors.push('src/layouts/Layout.astro: missing footer-only ORES Chat component');
+}
+if (!footer.includes('https://ores-chat.github.io/chat/?context=cliptown')) {
+  errors.push('src/layouts/Layout.astro: missing ORES Chat fallback link');
+}
+if (!layout.includes('integrity="sha256-jtetSlJDWLAWg2+zQIZGUX71OYlIKkZ9sbPnFMup5SE="')) {
+  errors.push('src/layouts/Layout.astro: ORES Chat component is not integrity pinned');
+}
+if (layout.slice(0, layout.indexOf('<footer')).includes('<ores-chat-footer-link')) {
+  errors.push('src/layouts/Layout.astro: ORES Chat affordance must remain footer-only');
+}
+
 // ---------------------------------------------------------------------------
 // Built-output pass.
 //

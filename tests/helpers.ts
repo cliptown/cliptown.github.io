@@ -18,8 +18,9 @@ export interface PageProblems {
  */
 export interface WatchOptions {
   /**
-   * URLs that are *expected* to return an error status — currently only the
-   * deliberate 404-page navigation. Everything else is a defect.
+   * URLs that are expected to fail in the scenario under test, such as a
+   * deliberate 404 navigation or an unavailable optional enhancement.
+   * Everything else remains a defect.
    */
   expectedErrorUrls?: RegExp;
 }

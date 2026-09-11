@@ -41,7 +41,10 @@ test.describe('a dangerous PUBLIC_PATREON_URL is rejected, not rendered', () => 
   }
 
   test('the footer degrades to the internal support route', async ({ page }) => {
-    const problems = watchForProblems(page);
+    const problems = watchForProblems(page, {
+      expectedErrorUrls:
+        /^https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js$/,
+    });
     await page.goto('/');
 
     const footerSupport = page
