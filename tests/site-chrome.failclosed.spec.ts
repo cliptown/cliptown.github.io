@@ -2,9 +2,6 @@ import { expect, test } from '@playwright/test';
 import { ROUTES } from './e2e-constants.mjs';
 import { expectNoHorizontalOverflow, expectNoProblems, watchForProblems } from './helpers';
 
-const OPTIONAL_ORES_CHAT_COMPONENT =
-  /^https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js$/;
-
 /**
  * Every published route must render the shared chrome, expose real landmarks,
  * load without a single console/page error, and never scroll sideways.
@@ -12,10 +9,7 @@ const OPTIONAL_ORES_CHAT_COMPONENT =
 for (const route of ROUTES) {
   test.describe(`route ${route}`, () => {
     test('loads without console errors, page errors, or failed requests', async ({ page }) => {
-      const problems = watchForProblems(page, {
-        // The fallback anchor is the product until the distribution PR deploys.
-        expectedErrorUrls: OPTIONAL_ORES_CHAT_COMPONENT,
-      });
+      const problems = watchForProblems(page);
 
       const response = await page.goto(route);
       expect(response?.status(), `${route} should return 200`).toBe(200);
@@ -108,7 +102,7 @@ for (const route of ROUTES) {
       expect(csp).toContain("default-src 'self'");
       expect(csp).toContain("object-src 'none'");
       expect(csp).toContain("base-uri 'self'");
-      expect(csp).toContain("script-src 'self' https://ores-chat.github.io");
+      expect(csp).toContain("script-src 'self'");
     });
 
     test('does not scroll horizontally on mobile or desktop', async ({ page }) => {
@@ -156,7 +150,7 @@ test.describe('site-wide chrome behaviour', () => {
     // The 404 status is the point of the test, so only that URL may error.
     const problems = watchForProblems(page, {
       expectedErrorUrls:
-        /(?:this-route-does-not-exist|^https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js$)/,
+        /this-route-does-not-exist/,
     });
 
     const response = await page.goto('/this-route-does-not-exist');
