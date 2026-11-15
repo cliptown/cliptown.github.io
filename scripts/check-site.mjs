@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
+import { unsafeNewTabLinks } from './anchor-policy.mjs';
 
 const root = process.cwd();
 const required = [
@@ -57,13 +58,8 @@ for (const file of sourceFiles) {
   // Every new-tab link must sever the opener relationship. `rel="noreferrer"`
   // implies `noopener` in current browsers, but stating both keeps the
   // guarantee explicit and survives older engines.
-  for (const match of text.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/g)) {
-    const tag = match[0];
-    const rel = /rel=["']([^"']*)["']/.exec(tag)?.[1] ?? '';
-    const tokens = rel.split(/\s+/);
-    if (!tokens.includes('noopener') || !tokens.includes('noreferrer')) {
-      errors.push(`${relPath(file)}: target="_blank" link missing rel="noopener noreferrer"`);
-    }
+  for (const tag of unsafeNewTabLinks(text)) {
+    errors.push(`${relPath(file)}: target="_blank" link missing rel="noopener noreferrer": ${tag.slice(0, 90)}`);
   }
 }
 
