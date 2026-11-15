@@ -15,7 +15,7 @@
     "check:dist": "node scripts/check-site.mjs --require-dist",
     "build:e2e": "node scripts/build-e2e.mjs",
     "test:e2e": "npm run build:e2e && playwright test",
-    "test": "npm run check:site && npm run build && npm run check:dist",
+    "test": "node --test test/anchor-policy.test.mjs && npm run check:site && npm run build && npm run check:dist",
     "lint:ores": "if [ -f .ores-lint/lint.sh ]; then sh .ores-lint/lint.sh; else echo 'ores-lint not installed'; fi",
     "prepublishOnly": "npm run lint:ores",
     "prebuild": "npm run lint:ores"
