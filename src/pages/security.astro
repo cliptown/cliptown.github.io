@@ -63,6 +63,20 @@ import Layout from '../layouts/Layout.astro';
         </section>
       </div>
 
+      <h2 id="browser-capture-consent">Browser draft capture controls</h2>
+      <p>
+        Draft recovery should be enabled only after consent for the exact site origin.
+        The extension's capture policy excludes password, payment, one-time-code,
+        recovery-key, and explicitly private fields. Revoking an origin must stop
+        new staging; encrypted sync is not a substitute for consent.
+      </p>
+      <p>
+        These are security requirements under active testing, not an independent
+        certification. Review the
+        <a href="https://github.com/cliptown/cliptown-extension" target="_blank" rel="noopener noreferrer">browser extension source and capture tests</a>
+        before enabling this feature in a sensitive workflow.
+      </p>
+
       <h2>Backend data</h2>
       <p>
         The Rust service stores user-scoped ciphertext envelopes, encrypted metadata, object references, blind-index tokens, optional embeddings, device records, idempotency keys, sync sequences, and deletion tombstones. PostgreSQL row-level security and application authorization both constrain access.
